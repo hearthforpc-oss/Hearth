@@ -33,6 +33,11 @@ Hearth uses Google Drive folder sharing — the same way you would share a docum
 
 ---
 
+5 obscure scanners flag it as a false positive, source code is public on GitHub, here's the link to verify it yourself.
+https://virustotal.com/gui/file/cbd5ef008ae7e8434691a5c9e10e166fb00942db60402e7bf6eefba466ce5b3e/detection
+
+---
+
 ## What You Need
 - A Windows PC
 - A Google account (free at google.com)
