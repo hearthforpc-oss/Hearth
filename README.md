@@ -7,6 +7,22 @@ Free. Open source. Your saves stay in your own Google Drive.
 
 ---
 
+## Is Hearth safe?
+
+**Yes. Here's exactly how it works:**
+
+Hearth uses Google Drive folder sharing — the same technology you'd use to share a document with a coworker or family member. When you set up Hearth, you create one folder called HearthSync and share it with your gaming partners.
+
+- Your partner only has access to that one folder. Not your email, not your other Drive files, not your Google account.
+- Hearth never asks for your Google password or account credentials. It reads and writes to a folder you control through Google's own sync app.
+- Your save files never touch anyone else's servers. They live in your Google Drive.
+- Hearth is open source — every line of code is public on this page. Anyone can read exactly what it does.
+
+**Who is Hearth designed for?**
+People you already play games with — friends, family, your cousin. It is not designed for sharing with strangers. If you wouldn't share a Google Doc with someone, don't share your HearthSync folder with them either.
+
+---
+
 ## Supported Games
 - Icarus
 - Valheim
