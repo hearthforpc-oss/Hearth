@@ -33,11 +33,6 @@ Hearth uses Google Drive folder sharing — the same way you would share a docum
 
 ---
 
-5 obscure scanners flag it as a false positive, source code is public on GitHub, here's the link to verify it yourself.
-https://virustotal.com/gui/file/cbd5ef008ae7e8434691a5c9e10e166fb00942db60402e7bf6eefba466ce5b3e/detection
-
----
-
 ## What You Need
 - A Windows PC
 - A Google account (free at google.com)
@@ -54,8 +49,12 @@ That's it. No coding. No servers. No technical knowledge required.
 1. Go to **drive.google.com/drive/downloads** in your browser
 2. Click the download button and run the installer
 3. Sign in with your Google account when it asks
-4. When it asks how to sync files, choose **Mirror Files** — this is important, Stream Files will not work
-5. After it finishes, Google Drive will create a new folder on your PC that looks like a regular folder. On most computers it shows up as a drive letter like G: or F: in File Explorer — look for it under "This PC"
+4. After it installs, find the Google Drive icon in your system tray (bottom right near the clock) and click it
+5. Click the **gear icon** in the top right of the popup, then click **Preferences**
+6. In the Preferences window, click **Google Drive** on the left side
+7. Select **Mirror Files** — this is important, Stream Files will not work
+8. Click Save and let it finish syncing
+9. Google Drive will create a new folder on your PC that looks like a regular drive. Look for it under "This PC" in File Explorer — it will show up as a drive letter like G: or F:
 
 ### Step 2 — Create a shared folder
 
@@ -72,10 +71,14 @@ That's it. No coding. No servers. No technical knowledge required.
 ### Step 3 — Accept the shared folder (everyone except the person who created it)
 
 1. Check your email for an invitation from Google Drive
-2. Click the link to accept
-3. Open Google Drive on your PC (the folder you set up in Step 1)
-4. The HearthSync folder should now appear inside your Google Drive folder on your PC
-5. If you don't see it yet, wait a minute and check again
+2. Click the link in the email to accept
+3. Go to **drive.google.com** in your browser
+4. In the left sidebar click **Shared with me**
+5. Find the HearthSync folder
+6. Right-click it and click **Add shortcut to Drive**
+7. Choose **My Drive** and click Add
+8. Now open your Google Drive folder on your PC — HearthSync should appear within a minute or two
+9. If you don't see it yet, wait a minute and check again
 
 ### Step 4 — Download and run Hearth
 
