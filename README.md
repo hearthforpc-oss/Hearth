@@ -95,6 +95,8 @@ Click **Save** when done.
 
 ### Step 6 — Share your world
 
+> **Before you do this:** Launch your game at least once and then close it. Hearth needs the game to create its save files first. If you skip this step your world list will be empty.
+
 1. In Hearth, find your game in the list
 2. You will see your worlds listed underneath
 3. Check the box next to the world you want to share
