@@ -1,25 +1,24 @@
 # Hearth v1.0
-**Share game worlds with your crew. No dedicated server needed.**
+**Play the same game world with your friends — even when you're on different schedules.**
 
-Hearth syncs your game save files through Google Drive so you and your friends can play the same world — even when you're on different schedules.
+Hearth is a free app that automatically shares your game save files with your friends through Google Drive. When you stop playing, your friend can pick up right where you left off — no dedicated server needed.
 
-Free. Open source. Your saves stay in your own Google Drive.
+**Free. Open source. Your save files stay in your own Google Drive.**
 
 ---
 
 ## Is Hearth safe?
 
-**Yes. Here's exactly how it works:**
+Yes. Here is exactly how it works:
 
-Hearth uses Google Drive folder sharing — the same technology you'd use to share a document with a coworker or family member. When you set up Hearth, you create one folder called HearthSync and share it with your gaming partners.
+Hearth uses Google Drive folder sharing — the same way you would share a document with a friend or family member. You create one folder called HearthSync and share it with the people you play with.
 
-- Your partner only has access to that one folder. Not your email, not your other Drive files, not your Google account.
-- Hearth never asks for your Google password or account credentials. It reads and writes to a folder you control through Google's own sync app.
-- Your save files never touch anyone else's servers. They live in your Google Drive.
+- Your friend only gets access to that one folder. Not your email, not your other files, not your Google account.
+- Hearth never asks for your Google password. It reads and writes files through Google's own app on your PC.
+- Your save files never go to anyone else's servers. They live in your own Google Drive.
 - Hearth is open source — every line of code is public on this page. Anyone can read exactly what it does.
 
-**Who is Hearth designed for?**
-People you already play games with — friends, family, your cousin. It is not designed for sharing with strangers. If you wouldn't share a Google Doc with someone, don't share your HearthSync folder with them either.
+**Hearth is designed for people you already play games with — friends, family, your cousin. It is not for sharing with strangers.**
 
 ---
 
@@ -29,125 +28,162 @@ People you already play games with — friends, family, your cousin. It is not d
 - Terraria
 - Terraria (tModLoader)
 - Core Keeper
-- Enshrouded ⚠ Steam Cloud must be disabled
+- Enshrouded
 - Sons of the Forest
 
 ---
 
-## Requirements
-- Windows PC
-- [Google Drive for Desktop](https://drive.google.com/drive/downloads) — must use **Mirror Files** mode
-- That's it. No Python required when using the exe.
+## What You Need
+- A Windows PC
+- A Google account (free at google.com)
+- The people you play with also need a Google account
+
+That's it. No coding. No servers. No technical knowledge required.
 
 ---
 
-## First Time Setup (everyone does this once)
+## Setup — Do This Once
 
-### 1. Install Google Drive for Desktop
-- Download and install from [drive.google.com/drive/downloads](https://drive.google.com/drive/downloads)
-- Sign in with your Google account
-- Open Google Drive settings → set sync mode to **Mirror Files** (not Stream Files)
+### Step 1 — Download and install Google Drive for Desktop
 
-### 2. Create a shared folder
-- One person creates a folder called `HearthSync` in their Google Drive
-- Right-click it → Share → add everyone's Google email with **Editor** access
-- Everyone accepts the share — you now all sync the same folder
+1. Go to **drive.google.com/drive/downloads** in your browser
+2. Click the download button and run the installer
+3. Sign in with your Google account when it asks
+4. When it asks how to sync files, choose **Mirror Files** — this is important, Stream Files will not work
+5. After it finishes, Google Drive will create a new folder on your PC that looks like a regular folder. On most computers it shows up as a drive letter like G: or F: in File Explorer — look for it under "This PC"
 
-### 3. Run Hearth
-- Download `Hearth.exe` from the [Releases page](https://github.com/hearthforpc-oss/Hearth/releases)
-- Double-click it to launch — no installation needed
-- Enter your name, Steam ID (Icarus / Core Keeper only), and browse to your HearthSync folder
-- Click Save
+### Step 2 — Create a shared folder
 
-### 4. Share a world
-- Find your world in the list under your game
-- Check the checkbox next to it — Hearth pushes it to Drive
-- Your partner opens Hearth and hits **Sync Now** — the world appears under your name
+**One person in your group does this. Everyone else skips to Step 3.**
+
+1. Open your Google Drive folder in File Explorer (the one you just set up)
+2. Right-click inside it and create a new folder called **HearthSync**
+3. Go to drive.google.com in your browser
+4. Find the HearthSync folder, right-click it, and click **Share**
+5. Type in your friend's Google email address and make sure they have **Editor** access
+6. Click Send — your friend will get an email invitation
+7. Your friend clicks the link in the email to accept
+
+### Step 3 — Accept the shared folder (everyone except the person who created it)
+
+1. Check your email for an invitation from Google Drive
+2. Click the link to accept
+3. Open Google Drive on your PC (the folder you set up in Step 1)
+4. The HearthSync folder should now appear inside your Google Drive folder on your PC
+5. If you don't see it yet, wait a minute and check again
+
+### Step 4 — Download and run Hearth
+
+1. Go to **github.com/hearthforpc-oss/Hearth/releases**
+2. Click **Hearth.exe** to download it
+3. Double-click Hearth.exe to run it — Windows may show a warning saying "Unknown publisher." Click **More info** then **Run anyway.** This warning appears because Hearth doesn't have a paid security certificate yet. The source code is fully public if you want to verify it.
+4. Hearth will open and ask you to fill in some information
+
+### Step 5 — Set up Hearth
+
+Fill in these fields:
+
+**Your name** — just type your first name or nickname. Your friends will see this in the app.
+
+**Steam ID** — only needed if you play Icarus or Core Keeper. For all other games, leave this blank.
+- To find your Steam ID: open Steam, click your profile name at the top right, click View Profile, then look at the URL in your browser. The long number at the end is your Steam ID.
+- Example: steamcommunity.com/profiles/**76561198292066021**
+
+**Drive folder** — click Browse and find your HearthSync folder. It will be inside your Google Drive folder on your PC. Select the HearthSync folder and click OK.
+
+Click **Save** when done.
+
+### Step 6 — Share your world
+
+1. In Hearth, find your game in the list
+2. You will see your worlds listed underneath
+3. Check the box next to the world you want to share
+4. Hearth will push it to your Google Drive folder automatically
+5. Your friend opens Hearth and clicks **Sync Now** — your world will appear under your name
+6. Your friend can now download it and play
 
 ---
 
-## For developers (running from source)
-If you want to run the Python script directly instead of the exe:
+## Playing Together
 
-**Requirements:** Python 3.10+ — [python.org/downloads](https://python.org/downloads) (check "Add Python to PATH")
-
-```
-pip install customtkinter psutil pystray pillow pywin32
-```
-
-Then run `HearthSync.bat` or `hearth_sync.pyw` directly.
-
----
-
-## Daily Use
-
-**Playing solo while your partner is offline:**
-1. Hit Sync Now — Hearth pulls the latest save
+**When you want to play solo while your friend is offline:**
+1. Open Hearth and click **Sync Now** to get the latest save
 2. Launch your game and play
-3. Close the game — Hearth auto-syncs when it detects the game closed
+3. When you close the game, Hearth automatically syncs your progress back to Drive
+4. Your friend can then sync and pick up where you left off
 
-**Playing together:**
-- One person hosts in-game, others join as normal
-- Hearth handles the save when the host closes the game
-
----
-
-## Tray Icon States
-| Color | Meaning |
-|-------|---------|
-| 🟠 Orange | Hearth is running, idle |
-| 🟢 Green | Currently syncing |
-| 🔵 Blue | Update available |
-| 🔴 Red | Issue detected |
-
-Click the tray icon to restore the Hearth window.
+**When you play together at the same time:**
+- One person hosts the game, others join as normal
+- Hearth handles the save file when the host closes the game
 
 ---
 
-## Enshrouded Notes
-Enshrouded uses Steam Cloud by default. Hearth cannot see Steam Cloud saves.
+## Enshrouded Players — Read This
 
-**Disable Steam Cloud for Enshrouded:**
-Steam → right-click Enshrouded → Properties → General → uncheck Steam Cloud
+Enshrouded saves to Steam's servers by default. Hearth cannot see those files. You need to turn off Steam Cloud for Enshrouded:
 
-Both you and your partner must do this.
+1. Open Steam
+2. Right-click Enshrouded in your library
+3. Click Properties
+4. Click General
+5. Uncheck "Keep game saves in the Steam Cloud"
+
+**Both you and your friend must do this.** If one person has it on and the other has it off, it will not work.
+
+---
+
+## Tray Icon
+When you close the Hearth window it keeps running in your system tray (bottom right corner of your screen, near the clock). Click the Hearth icon to bring the window back.
+
+| Icon Color | What It Means |
+|------------|--------------|
+| Orange | Hearth is running normally |
+| Green | Currently syncing |
+| Blue | An update is available |
+| Red | Something needs attention |
 
 ---
 
 ## Backups
-Hearth creates automatic backups before every sync.
-Location: `C:\Users\[You]\Hearth_Backups\`
+Hearth automatically backs up your save files before every sync. You can find your backups at:
+`C:\Users\[YourName]\Hearth_Backups\`
 
 ---
 
-## Troubleshooting
+## Something Not Working?
 
-**World not showing in Hearth**
-- Launch the game once so it creates its save folders
-- For Enshrouded and Core Keeper: make sure Steam Cloud is disabled
+**I can't find my HearthSync folder in Hearth**
+- Make sure Google Drive for Desktop is installed and set to Mirror Files mode
+- Look for a drive letter like G: or F: in File Explorer under "This PC"
+- The HearthSync folder should be inside that drive
 
-**Save path wrong for my setup**
-- Click the **Config** button next to the game name
-- Browse to your actual save folder
+**My world isn't showing up in Hearth**
+- Launch the game at least once so it creates your save files
+- For Enshrouded and Core Keeper: make sure Steam Cloud is turned off
 
-**Lock is stuck**
-- Go to Help → Unlock All in Hearth
-- Or delete `hearth.lock` from the shared Drive folder manually
+**The save path is wrong for my setup**
+- Click the **Config** button next to the game name in Hearth
+- Browse to your actual save folder and select it
 
-**Drive not synced yet**
-- Wait 30–60 seconds after a session before your partner syncs
-- Check the Google Drive icon in your system tray
+**The lock is stuck and I can't sync**
+- In Hearth, go to Help then Unlock All
+- Or find the HearthSync folder in your Google Drive and delete the file called hearth.lock
+
+**Windows says Hearth is dangerous**
+- Click "More info" then "Run anyway"
+- This happens because Hearth doesn't have a paid security certificate yet
+- The full source code is public at github.com/hearthforpc-oss/Hearth if you want to verify it
 
 ---
 
 ## Donate
-Hearth is free forever. If it saves you money on server hosting or just makes your gaming sessions better, consider buying me a coffee.
+Hearth is free forever. If it saves you the cost of a game server or just makes gaming with your friends easier, consider buying me a coffee.
 
-[☕ buymeacoffee.com/hearthapp](https://buymeacoffee.com/hearthapp)
+https://buymeacoffee.com/hearthapp
 
 ---
 
 ## License
-MIT License — free to use, modify, and distribute.
+MIT License — free to use, share, and modify.
 
-Built by Chester Houston · hearthforpc@gmail.com
+Built by Chester Houston - hearthforpc@gmail.com
