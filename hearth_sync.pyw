@@ -11,7 +11,7 @@
 # # HearthSync Project Log
 # Last updated: 2026-04-17
 # 
-# ---
+# 
 # 
 # ## Business Context & Roadmap
 # 
@@ -19,11 +19,11 @@
 # - Free download, donation button only (https://buymeacoffee.com/hearthapp)
 # - No license server, no accounts, no subscription
 # 
-# ### Go-to-market strategy
-# 1. **Beta launch in Icarus community** — Icarus has a tight-knit cooperative-focused community that feels the "can't share a prospect without coordinating schedules" pain acutely. Good fit for first real-world stress test.
-# 2. **Collect feedback, fix bugs** — real users will surface issues that two-person testing never will
-# 3. **Expand to additional games** — one game at a time, each with its own community push
-# 4. **Monetization trigger at ~20-30k downloads** — swap to $5 one-time fee. Users who already trust it will pay easily. No account system needed — just a simple purchase gate.
+# 
+# 
+# 
+# 
+# 
 # 
 # ### Why Icarus first
 # - Cooperative-focused playerbase
@@ -185,142 +185,8 @@
 # 
 # ---
 # 
-# ## Known Issues / Still To Test
-# 
-# ### ⚠ Icarus regression test required (HIGH PRIORITY)
-# - Icarus was rock solid before today's session
-# - Today's changes touched `_push_standard` and `_pull_standard` — the exact functions Icarus uses
-# - Changes made: world_id validation in push, save_ext filter in pull
-# - These should only improve Icarus behavior but MUST be retested before any public release
-# - Test: push a prospect, pull it on another machine, verify no extra files copied, verify no None folders created
-# 
-# ### Startup auto-pull timing
-# - **Problem:** On startup, Hearth auto-pulls others' worlds before the user has a chance to launch the game. If the local save folder is empty, the pulled world lands in slot 0. User then launches game, game also creates slot 0, collision.
-# - **Planned fix:** Don't auto-pull slot-based games (Enshrouded, Core Keeper) on startup. Require manual pull from worlds list for those games.
-# 
-# ### Push-back verification pending
-# - After Player B plays Player A's world solo and closes the game, need to verify:
-#   - Hearth correctly identifies `3bd85c7d` as belonging to Chester's `3ad85aea` via worldmap
-#   - Files are renamed back to `3ad85aea*` and pushed to correct Drive folder
-#   - Player A can then pull their world back with Player B's progress
-# 
-# ### Icarus pull creating extra copies
-# - When Icarus pull ran, it copied two of Chester's own save files alongside the cousin's file
-# - Believed to be fixed by `_pull_standard` extension filtering but needs confirmation
-# 
-# ---
-# 
-# ## Test Setup
-# - **Chester:** Buckhannon WV, username "Chester" in Hearth
-# - **Cousin:** username "Sour Nipples" in Hearth
-# - **Shared Drive folder:** Google Drive mirrored folder pointing to HearthSync root
-# - **Cousin's mistake (fixed):** Had Drive folder set to `Drive\HearthSync\Icarus` instead of `Drive\HearthSync`
-# - **Cousin's Steam Cloud:** Was enabled for Enshrouded — disabled, confirmed working after
-# 
-# ---
-# 
-# ## Session History
-# 
-# ### 2026-04-17
-# - Enshrouded round trip testing revealed find_free_enshrouded_slot was broken
-# - Root cause: Enshrouded pre-creates all 10 hex slot placeholder files on install
-# - find_free_enshrouded_slot saw placeholder files and thought all slots occupied
-# - Result: no free slot found, cousin's pull failed or landed in wrong place
-# - Fix: slot is only "occupied" if main hex file AND at least one numbered backup (-1 through -9) exist
-# - Valheim save_paths cleaned up — missing fields restored (save_ext, backup_pattern, etc.)
-# - Valheim r2modman/Steam userdata path retained from 0.9.6 session
-#
-# **Version 0.9.7 fixes:**
-# 1. find_free_enshrouded_slot now uses backup presence check (same logic as get_slot_worlds)
-# 2. Valheim GAMES entry restored with all required fields
-# 3. Index patch restored with correct logic — after pull:
-#    a) Read sender's index to find which numbered backup is current (e.g. "latest": 7)
-#    b) Copy that backup file over the main no-dash hex file
-#    c) Reset index to "latest": 0 so Enshrouded loads the main file
-#    d) Same done for _info-index
-#    Root cause: main no-dash file is always old (Enshrouded overwrites numbered backups, not main)
-#    Previous fix (reset to 0 only) was wrong because main file was still old
-#    Previous fix (preserve index) was wrong because recipient may not have same backup numbers
-#
-# **Still pending:**
-# - Full Enshrouded round trip verification with 0.9.7
-# - Cousin needs to delete Drive/Enshrouded/Sour Nipples/worldmap.json for clean remap
-# - Icarus regression test
-# - exe packaging (PyInstaller) — saved for v1.0
-# - Custom game snapshot detection feature — saved for v1.0
-# - README — written after exe, based on install experience
-# - GitHub publish
-# - GioFermento contact
-#
-# ### 2026-04-16 (evening session)
-# - Verified Icarus push/pull working correctly — rock solid
-# - Verified backups creating for Icarus and Terraria
-# - Identified Enshrouded world not showing in Hearth worlds list
-# - Root cause 1: slot detection required exactly `-1` file but Enshrouded sometimes skips to `-2`, `-3` etc
-# - Root cause 2: worldmap username stored as "sour nipples" (lowercase) but looked up as "Sour Nipples" — case sensitive dict lookup failed silently, push went to wrong folder
-# - Root cause 3: `get_enshrouded_files` only included `-1` backup, not `-2`, `-3` etc
-# - Root cause 4: `_world_status` still using timestamps for own worlds instead of hash check
-# - Repeated pulling of unplayed worlds stopped after hash check — confirmed working
-# - Enshrouded push-back from cousin failed due to worldmap case mismatch
-# - Drive cleanup performed — deleted stale test folders, None folders
-# 
-# **Version 0.9.6 fixes:**
-# 1. Slot detection now checks for any numbered backup (-1 through -9) not just -1
-# 2. get_enshrouded_files now includes all numbered backups that exist
-# 3. Worldmap lookup is now case-insensitive in both push and pull
-# 4. Worldmap write normalizes casing — removes lowercase duplicate before writing
-# 5. _world_status uses hash check for own worlds — shows "Synced with cloud" correctly
-# 6. 5 minute cooldown removed — hash check is the only gate now
-# 7. Version bumped to 0.9.6
-# 
-# **Still pending verification:**
-# - Full Enshrouded round trip with 0.9.6 — cousin needs to come back online
-# - Cousin needs to delete Drive/Enshrouded/Sour Nipples/3ad85aea/worldmap.json for clean remap
-# - Verify Enshrouded backup folder gets created on pull
 # 
 # 
-# 
-# ### 2026-04-16 (continued)
-# - Removed hearth_debug.txt — was writing to Drive folder every 10s, causing constant sync and filling Drive
-# - Built hearth_dev.pyw — separate developer tool with 9 tabs (Overview, Drive Inspector, Local Files, Locks, Worldmaps, Timestamps, Processes, Config, Log)
-# - Identified pull feedback loop — timestamp-based is_drive_newer was returning true even when content unchanged, causing repeated pulls
-# - Chester's Enshrouded world wiped by startup auto-pull overwriting slot 0 — no backup was created
-# - Confirmed backups were only created for Icarus, never verified for other games
-# - Confirmed hearth_debug.txt ate Sour Nipples' entire 15GB Drive quota
-# - Confirmed Sour Nipples had drive folder set to HearthSync\Icarus instead of HearthSync root (fixed manually)
-# 
-# **Version 0.9.5 fixes implemented:**
-# 1. Hash-based is_drive_newer — content must actually differ to trigger a pull, timestamps alone no longer enough
-# 2. backup_local now always runs before any overwrite, regardless of is_own flag
-# 3. New backup_slot() function backs up entire Enshrouded hex slot before overwriting
-# 4. _quick_pull moved to background thread — no more UI freeze on download click
-# 5. Pull guard added — same world cannot be pulled twice simultaneously  
-# 6. Monitor idle pulls are now silent when content unchanged — no log spam
-# 7. Transient monitor errors are silent — no log spam from network hiccups
-# 8. Version bumped to 0.9.5
-# 
-# **Still pending:**
-# - Full Enshrouded round-trip verification (push → cousin pulls → cousin plays → cousin pushes back → Chester pulls)
-# - Icarus regression test
-# - Verify backups are actually landing in Hearth_Backups for all games
-# - "Update available" showing incorrectly on own shared worlds (believed fixed by hash check)
-# 
-# 
-# ### 2026-04-16
-# - Recovered project from lost chat using Hearth_v095.zip artifact
-# - Compared v0.8 (last working) vs v0.9.5 (broken) to identify regressions
-# - Identified root cause: worldmap slot remapping logic broke push/pull for Enshrouded
-# - Refactored to game-specific push/pull dispatcher pattern
-# - Fixed None folder bug
-# - Fixed own files being swept into pulls
-# - Fixed Steam Cloud warning not showing
-# - Fixed Enshrouded push not being worldmap-aware
-# - Fixed missing `{hex_id}-1` file in pattern list
-# - Fixed index files needing `"latest": 0` after slot rename
-# - **Milestone achieved:** Cousin successfully loaded Chester's Enshrouded world in his game
-# - Pending: verify push-back flow when cousin closes game
-# 
-#
 # =============================================================================
 
 import customtkinter as ctk
