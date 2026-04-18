@@ -36,27 +36,26 @@ People you already play games with — friends, family, your cousin. It is not d
 
 ## Requirements
 - Windows PC
-- [Python 3.10+](https://python.org/downloads) — check "Add Python to PATH" during install
 - [Google Drive for Desktop](https://drive.google.com/drive/downloads) — must use **Mirror Files** mode
+- That's it. No Python required when using the exe.
 
 ---
 
 ## First Time Setup (everyone does this once)
 
-### 1. Install dependencies
-```
-pip install customtkinter psutil pystray pillow pywin32
-```
+### 1. Install Google Drive for Desktop
+- Download and install from [drive.google.com/drive/downloads](https://drive.google.com/drive/downloads)
+- Sign in with your Google account
+- Open Google Drive settings → set sync mode to **Mirror Files** (not Stream Files)
 
-### 2. Set up Google Drive
-- Install Google Drive for Desktop
-- Open Drive settings → set sync mode to **Mirror Files** (not Stream Files)
-- One person creates a folder called `HearthSync` in their Drive
-- Right-click → Share → add everyone's Google email with **Editor** access
+### 2. Create a shared folder
+- One person creates a folder called `HearthSync` in their Google Drive
+- Right-click it → Share → add everyone's Google email with **Editor** access
 - Everyone accepts the share — you now all sync the same folder
 
 ### 3. Run Hearth
-- Double-click `Hearth.exe`
+- Download `Hearth.exe` from the [Releases page](https://github.com/hearthforpc-oss/Hearth/releases)
+- Double-click it to launch — no installation needed
 - Enter your name, Steam ID (Icarus / Core Keeper only), and browse to your HearthSync folder
 - Click Save
 
@@ -64,6 +63,19 @@ pip install customtkinter psutil pystray pillow pywin32
 - Find your world in the list under your game
 - Check the checkbox next to it — Hearth pushes it to Drive
 - Your partner opens Hearth and hits **Sync Now** — the world appears under your name
+
+---
+
+## For developers (running from source)
+If you want to run the Python script directly instead of the exe:
+
+**Requirements:** Python 3.10+ — [python.org/downloads](https://python.org/downloads) (check "Add Python to PATH")
+
+```
+pip install customtkinter psutil pystray pillow pywin32
+```
+
+Then run `HearthSync.bat` or `hearth_sync.pyw` directly.
 
 ---
 
