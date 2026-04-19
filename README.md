@@ -23,13 +23,26 @@ Hearth uses Google Drive folder sharing — the same way you would share a docum
 ---
 
 ## Supported Games
+
+**Verified working:**
 - Icarus
 - Valheim
 - Terraria
 - Terraria (tModLoader)
 - Core Keeper
 - Enshrouded
+
+**In the app — community testing needed:**
 - Sons of the Forest
+- 7 Days to Die
+- The Forest
+- Grounded
+- Astroneer
+- V Rising
+- Don't Starve Together
+- Stardew Valley
+
+If you test one of the unverified games and it works, let us know in the GitHub issues tab so we can mark it verified.
 
 ---
 
