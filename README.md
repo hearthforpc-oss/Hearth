@@ -1,4 +1,4 @@
-# Hearth v1.0
+# Hearth v1.3
 **Play the same game world with your friends — even when you're on different schedules.**
 
 Hearth is a free app that automatically shares your game save files with your friends through Google Drive. When you stop playing, your friend can pick up right where you left off — no dedicated server needed.
@@ -23,26 +23,13 @@ Hearth uses Google Drive folder sharing — the same way you would share a docum
 ---
 
 ## Supported Games
-
-**Verified working:**
 - Icarus
 - Valheim
 - Terraria
 - Terraria (tModLoader)
 - Core Keeper
 - Enshrouded
-
-**In the app — community testing needed:**
 - Sons of the Forest
-- 7 Days to Die
-- The Forest
-- Grounded
-- Astroneer
-- V Rising
-- Don't Starve Together
-- Stardew Valley
-
-If you test one of the unverified games and it works, let us know in the GitHub issues tab so we can mark it verified.
 
 ---
 
@@ -116,7 +103,7 @@ Click **Save** when done.
 
 ### Step 6 — Share your world
 
-> **Before you do this:** Launch your game at least once and then close it. Hearth needs the game to create its save files first. If you skip this step your world list will be empty.
+> **Before you do this:** You need to have at least one saved world in your game. Just launching the game is not enough — you must create a world, load into it, and then exit. Hearth can only see worlds that have been saved to your PC. If you skip this step your world list will be empty.
 
 1. In Hearth, find your game in the list
 2. You will see your worlds listed underneath
@@ -138,6 +125,45 @@ Click **Save** when done.
 **When you play together at the same time:**
 - One person hosts the game, others join as normal
 - Hearth handles the save file when the host closes the game
+
+---
+
+## Valheim Players — Read This
+
+Valheim does not create any save files until you actually create a world and load into it. Just launching the game and reaching the main menu is not enough.
+
+Before Hearth can see your Valheim worlds, you must:
+
+1. Launch Valheim
+2. Click **Start Game**
+3. Create a new world (or load an existing one)
+4. Wait until you are fully loaded into the game
+5. Exit back to the main menu, then quit Valheim completely
+
+After that, Hearth will find your world automatically.
+
+---
+
+### Getting your Valheim worlds back from Steam Cloud
+
+If you have existing Valheim worlds but Hearth can't see them, Steam Cloud is likely holding your saves. Here's how to get them back:
+
+1. Open Steam
+2. Right-click Valheim in your library → click **Properties**
+3. Click **General**
+4. Uncheck **"Keep game saves in the Steam Cloud"**
+5. Launch Valheim — Steam may ask what to do with your saves. If it asks, choose **"Keep the local files"** or **"Download from Steam Cloud"** depending on which copy you want to keep
+6. Load into your world once so Valheim writes the save to your PC
+7. Exit Valheim completely
+8. Open Hearth — your worlds should now appear
+
+If Steam does not ask and your worlds are still missing after step 7, open File Explorer and check this folder:
+```
+C:\Users\[YourName]\AppData\LocalLow\IronGate\Valheim\worlds_local
+```
+You should see `.fwl` files with your world names. If the folder is empty, your saves are still on Steam's servers. In that case turn Steam Cloud back on, launch Valheim, exit, turn it back off, then repeat the steps above.
+
+**Everyone in your group must turn off Steam Cloud**, otherwise Valheim saves to Steam's servers instead of your PC and Hearth cannot see them.
 
 ---
 
@@ -181,7 +207,8 @@ Hearth automatically backs up your save files before every sync. You can find yo
 - The HearthSync folder should be inside that drive
 
 **My world isn't showing up in Hearth**
-- Launch the game at least once so it creates your save files
+- You must create a world and fully load into it at least once — just launching the game to the main menu is not enough for some games (Valheim in particular)
+- For Valheim and Enshrouded: make sure Steam Cloud is turned off (see the game-specific sections above)
 - For Enshrouded and Core Keeper: make sure Steam Cloud is turned off
 
 **The save path is wrong for my setup**
