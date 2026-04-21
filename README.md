@@ -1,4 +1,4 @@
-# Hearth v1.3
+# Hearth v1.4
 **Play the same game world with your friends — even when you're on different schedules.**
 
 Hearth is a free app that automatically shares your game save files with your friends through Google Drive. When you stop playing, your friend can pick up right where you left off — no dedicated server needed.
@@ -23,6 +23,8 @@ Hearth uses Google Drive folder sharing — the same way you would share a docum
 ---
 
 ## Supported Games
+
+**Verified working:**
 - Icarus
 - Valheim
 - Terraria
@@ -30,6 +32,17 @@ Hearth uses Google Drive folder sharing — the same way you would share a docum
 - Core Keeper
 - Enshrouded
 - Sons of the Forest
+
+**Unverified (may work):**
+- 7 Days to Die
+- The Forest
+- Grounded
+- Astroneer
+- V Rising
+- Don't Starve Together
+- Stardew Valley
+
+**Any game not on this list** — use Game → Add Game to add it manually.
 
 ---
 
@@ -109,18 +122,31 @@ Click **Save** when done.
 2. You will see your worlds listed underneath
 3. Check the box next to the world you want to share
 4. Hearth will push it to your Google Drive folder automatically
-5. Your friend opens Hearth and clicks **Sync Now** — your world will appear under your name
+5. Your friend opens Hearth — your world will appear under their name automatically within seconds
 6. Your friend can now download it and play
+
+---
+
+## How Automatic Sync Works
+
+Hearth keeps everyone in sync without any manual steps:
+
+- **When Hearth opens** — it immediately pulls any newer worlds from Drive before you do anything
+- **When a game is detected launching** — Hearth pulls the latest version of all shared worlds before you reach the main menu
+- **While Hearth is running** — it checks Drive every 10 seconds and pulls any changes automatically
+- **When you close a game** — Hearth waits 20 seconds then pushes your save to Drive and clears the lock
+
+You should never need to click Sync Now for normal play. It is there as a manual override if you need it.
 
 ---
 
 ## Playing Together
 
 **When you want to play solo while your friend is offline:**
-1. Open Hearth and click **Sync Now** to get the latest save
+1. Open Hearth — it will pull the latest save automatically
 2. Launch your game and play
 3. When you close the game, Hearth automatically syncs your progress back to Drive
-4. Your friend can then sync and pick up where you left off
+4. Your friend opens Hearth when they're ready — it pulls your save automatically
 
 **When you play together at the same time:**
 - One person hosts the game, others join as normal
@@ -193,6 +219,29 @@ When you close the Hearth window it keeps running in your system tray (bottom ri
 
 ---
 
+## Adding a Game Not on the List
+
+Hearth supports any game that saves to a local folder. To add one:
+
+1. Click **Game** in the menu bar
+2. Click **Add Game**
+3. Hearth will scan your PC for save folders and show you what it finds
+4. Click the game you want to add, or browse manually if it isn't listed
+5. Confirm the file extension and click Add Game
+
+The game will appear in your worlds list like any other supported game.
+
+---
+
+## Hiding Games You Don't Play
+
+1. Click **Game** in the menu bar
+2. Click **Show / Hide Games**
+3. Uncheck any games you want to hide
+4. Click Save
+
+---
+
 ## Backups
 Hearth automatically backs up your save files before every sync. You can find your backups at:
 `C:\Users\[YourName]\Hearth_Backups\`
@@ -209,7 +258,9 @@ Hearth automatically backs up your save files before every sync. You can find yo
 **My world isn't showing up in Hearth**
 - You must create a world and fully load into it at least once — just launching the game to the main menu is not enough for some games (Valheim in particular)
 - For Valheim and Enshrouded: make sure Steam Cloud is turned off (see the game-specific sections above)
-- For Enshrouded and Core Keeper: make sure Steam Cloud is turned off
+
+**My game isn't in the list**
+- Click Game → Add Game to add any game manually
 
 **The save path is wrong for my setup**
 - Click the **Config** button next to the game name in Hearth
