@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hearth — Share Game Worlds With Your Crew</title>
+<meta name="description" content="Free, open source tool to share game save files with friends through Google Drive. No dedicated server needed. Supports Icarus, Valheim, Enshrouded, Terraria, Core Keeper and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fire: #e85d04;
+    --ember: #f48c06;
+    --stone: #2c2c2c;
+    --ash: #1a1a1a;
+    --smoke: #3d3d3d;
+    --moss: #4a5c3a;
+    --parchment: #f5f0e8;
+    --text: #e8e0d0;
+    --muted: #9a9080;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ash);
+    color: var(--text);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px 80px;
+    position: relative;
+    background: radial-gradient(ellipse at 50% 60%, #2a1500 0%, #1a1a1a 60%, #0d0d0d 100%);
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 300px;
+    background: linear-gradient(to top, var(--ash), transparent);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .hero-logo {
+    width: min(600px, 90vw);
+    height: auto;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 3;
+    filter: drop-shadow(0 0 60px rgba(232, 93, 4, 0.4));
+    animation: logoFloat 4s ease-in-out infinite;
+  }
+
+  @keyframes logoFloat {
+    0%, 100% { transform: translateY(0px); filter: drop-shadow(0 0 60px rgba(232, 93, 4, 0.4)); }
+    50% { transform: translateY(-8px); filter: drop-shadow(0 0 80px rgba(232, 93, 4, 0.6)); }
+  }
+
+  .hero-tagline {
+    font-family: 'Crimson Pro', serif;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 3;
+  }
+
+  .hero-headline {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    color: var(--parchment);
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 3;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-sub {
+    max-width: 560px;
+    color: var(--muted);
+    font-size: 1rem;
+    margin-bottom: 48px;
+    position: relative;
+    z-index: 3;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    background: var(--fire);
+    color: #fff;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    padding: 16px 48px;
+    border-radius: 2px;
+    position: relative;
+    z-index: 3;
+    transition: all 0.3s;
+    box-shadow: 0 0 30px rgba(232, 93, 4, 0.3);
+  }
+
+  .btn-primary:hover {
+    background: var(--ember);
+    box-shadow: 0 0 50px rgba(232, 93, 4, 0.6);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    display: inline-block;
+    border: 1px solid var(--smoke);
+    color: var(--muted);
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    padding: 12px 32px;
+    border-radius: 2px;
+    margin-left: 16px;
+    transition: all 0.3s;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--fire);
+    color: var(--fire);
+  }
+
+  .hero-badges {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 32px;
+    position: relative;
+    z-index: 3;
+  }
+
+  .badge {
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .badge::before {
+    content: '✦';
+    color: var(--fire);
+    font-size: 0.6rem;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    text-align: center;
+    padding: 20px;
+    color: var(--fire);
+    font-size: 1.2rem;
+    letter-spacing: 0.3em;
+    opacity: 0.5;
+  }
+
+  /* ── SECTION ── */
+  section {
+    padding: 80px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--fire);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  h2 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    color: var(--parchment);
+    margin-bottom: 24px;
+    line-height: 1.3;
+  }
+
+  p { margin-bottom: 16px; color: var(--text); }
+
+  /* ── ORIGIN STORY ── */
+  .origin {
+    background: linear-gradient(135deg, #1e1a16, #221c14);
+    border-left: 3px solid var(--fire);
+    padding: 48px;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+    max-width: 900px;
+    margin: 0 auto 0;
+  }
+
+  .origin::before {
+    content: '"';
+    position: absolute;
+    top: -20px;
+    left: 30px;
+    font-family: 'Cinzel', serif;
+    font-size: 120px;
+    color: var(--fire);
+    opacity: 0.08;
+    line-height: 1;
+  }
+
+  .origin p {
+    font-style: italic;
+    font-size: 1.1rem;
+    color: #c8b89a;
+    line-height: 1.8;
+  }
+
+  .origin-attribution {
+    margin-top: 24px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-style: normal;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .steps {
+    display: grid;
+    gap: 32px;
+    margin-top: 40px;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 24px;
+    align-items: start;
+    padding: 32px;
+    background: #1e1e1e;
+    border: 1px solid #2a2a2a;
+    border-radius: 2px;
+    transition: border-color 0.3s;
+  }
+
+  .step:hover { border-color: var(--fire); }
+
+  .step-num {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    color: var(--fire);
+    opacity: 0.6;
+    line-height: 1;
+    padding-top: 4px;
+  }
+
+  .step h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    color: var(--parchment);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  .step p { font-size: 0.95rem; color: var(--muted); margin: 0; }
+
+  /* ── GAMES ── */
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .game-card {
+    background: #1e1e1e;
+    border: 1px solid #2a2a2a;
+    border-radius: 2px;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  .game-card:hover {
+    border-color: var(--fire);
+    transform: translateY(-2px);
+  }
+
+  .game-art {
+    width: 100%;
+    height: 94px;
+    object-fit: cover;
+    display: block;
+    background: var(--stone);
+  }
+
+  .game-info {
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .game-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    color: var(--parchment);
+    letter-spacing: 0.05em;
+  }
+
+  .verified-badge {
+    font-size: 0.65rem;
+    color: var(--fire);
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.05em;
+  }
+
+  .unverified-badge {
+    font-size: 0.65rem;
+    color: var(--muted);
+    font-family: 'Cinzel', serif;
+  }
+
+  /* ── SECURITY ── */
+  .security-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+    margin-top: 40px;
+  }
+
+  .security-item {
+    padding: 28px;
+    background: #1a1a1a;
+    border: 1px solid #252525;
+    border-radius: 2px;
+  }
+
+  .security-icon {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+  }
+
+  .security-item h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    color: var(--parchment);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  .security-item p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ── DONATE ── */
+  .donate-section {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(180deg, transparent, #1a0e00 40%, #1a0e00 60%, transparent);
+  }
+
+  .donate-section h2 { margin-bottom: 16px; }
+  .donate-section p { color: var(--muted); max-width: 500px; margin: 0 auto 32px; }
+
+  .btn-coffee {
+    display: inline-block;
+    background: #ff813f;
+    color: #fff;
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    padding: 14px 40px;
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  .btn-coffee:hover {
+    background: #ff6b1a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255, 107, 26, 0.3);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 1px solid #222;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  footer a { color: var(--fire); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* ── VIRUSTOTAL NOTE ── */
+  .vt-note {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 2px;
+    padding: 20px 24px;
+    margin-top: 24px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+  }
+
+  .vt-note a { color: var(--fire); }
+
+  /* ── FULL WIDTH DARK BAND ── */
+  .full-band {
+    background: #111;
+    padding: 80px 20px;
+  }
+
+  .full-band > * {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 600px) {
+    .btn-secondary { display: block; margin: 16px auto 0; width: fit-content; }
+    .origin { padding: 32px 24px; }
+    .step { grid-template-columns: 40px 1fr; gap: 16px; padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <img src="hearth_logo.jpg" alt="Hearth" class="hero-logo">
+  <p class="hero-tagline">Built by a window tinter in West Virginia for his cousin</p>
+  <h1 class="hero-headline">Share Game Worlds With Your Crew</h1>
+  <p class="hero-sub">No dedicated server. No subscriptions. No technical knowledge required. Just you, your friends, and the same world — whenever you're ready to play.</p>
+  <div>
+    <a href="https://github.com/hearthforpc-oss/Hearth/releases" class="btn-primary">Download Free</a>
+    <a href="https://github.com/hearthforpc-oss/Hearth" class="btn-secondary">View Source</a>
+  </div>
+  <div class="hero-badges">
+    <span class="badge">Free Forever</span>
+    <span class="badge">Open Source</span>
+    <span class="badge">Your Google Drive</span>
+    <span class="badge">No Server Required</span>
+  </div>
+</div>
+
+<!-- ORIGIN STORY -->
+<div class="full-band" style="background: #0f0f0f;">
+  <div class="origin">
+    <p>Me and my cousin play Icarus together. He works nights. When he's not online, the server closes. I got frustrated one night — couldn't get back into a world we'd spent weeks building. So I asked myself: why can't save files just sync automatically between friends, like Google Drive syncs documents?</p>
+    <p>Ten days later, Hearth existed. No coding background. No roadmap. Just a problem that needed solving and enough stubbornness to see it through.</p>
+    <p class="origin-attribution">— Chester Houston, Buckhannon WV</p>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section>
+  <p class="section-label">How It Works</p>
+  <h2>Dead Simple. Actually Works.</h2>
+  <p style="color: var(--muted);">Hearth runs in the background and handles everything automatically. You play the game. Hearth handles the rest.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div>
+        <h3>Share Your World</h3>
+        <p>Check the box next to any world in Hearth. It pushes your save files to a shared Google Drive folder your group controls.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div>
+        <h3>Your Friends Sync</h3>
+        <p>When a friend opens Hearth, it automatically pulls the latest version of shared worlds before they even launch the game.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div>
+        <h3>Play. Close. Done.</h3>
+        <p>When you close your game, Hearth waits 20 seconds then automatically pushes your progress back to Drive. No manual steps.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div>
+        <h3>Lock Protection</h3>
+        <p>When you're playing, Hearth shows everyone else that the world is in use. No accidental overwrites. No lost progress.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUPPORTED GAMES -->
+<div class="full-band">
+  <p class="section-label">Supported Games</p>
+  <h2>Verified Working</h2>
+  <p style="color: var(--muted); margin-bottom: 0;">These games are confirmed working by real players. Any game not on the list can be added manually through Game → Add Game.</p>
+
+  <div class="games-grid">
+    <div class="game-card">
+      <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/1149460/header.jpg" alt="Icarus" onerror="this.style.background='#2c2c2c';this.style.height='94px'">
+      <div class="game-info"><span class="game-name">Icarus</span><span class="verified-badge">✦ Verified</span></div>
+    </div>
+    <div class="game-card">
+      <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/892970/header.jpg" alt="Valheim" onerror="this.style.background='#2c2c2c'">
+      <div class="game-info"><span class="game-name">Valheim</span><span class="verified-badge">✦ Verified</span></div>
+    </div>
+    <div class="game-card">
+      <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/1203620/header.jpg" alt="Enshrouded" onerror="this.style.background='#2c2c2c'">
+      <div class="game-info"><span class="game-name">Enshrouded</span><span class="verified-badge">✦ Verified</span></div>
+    </div>
+    <div class="game-card">
+      <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/1621690/header.jpg" alt="Core Keeper" onerror="this.style.background='#2c2c2c'">
+      <div class="game-info"><span class="game-name">Core Keeper</span><span class="verified-badge">✦ Verified</span></div>
+    </div>
+    <div class="game-card">
+      <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/105600/header.jpg" alt="Terraria" onerror="this.style.background='#2c2c2c'">
+      <div class="game-info"><span class="game-name">Terraria</span><span class="verified-badge">✦ Verified</span></div>
+    </div>
+    <div class="game-card">
+      <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/1326470/header.jpg" alt="Sons of the Forest" onerror="this.style.background='#2c2c2c'">
+      <div class="game-info"><span class="game-name">Sons of the Forest</span><span class="verified-badge">✦ Verified</span></div>
+    </div>
+    <div class="game-card">
+      <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/251570/header.jpg" alt="7 Days to Die" onerror="this.style.background='#2c2c2c'">
+      <div class="game-info"><span class="game-name">7 Days to Die</span><span class="unverified-badge">Community</span></div>
+    </div>
+    <div class="game-card">
+      <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/413150/header.jpg" alt="Stardew Valley" onerror="this.style.background='#2c2c2c'">
+      <div class="game-info"><span class="game-name">Stardew Valley</span><span class="unverified-badge">Community</span></div>
+    </div>
+    <div class="game-card">
+      <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/322330/header.jpg" alt="Don't Starve Together" onerror="this.style.background='#2c2c2c'">
+      <div class="game-info"><span class="game-name">Don't Starve Together</span><span class="unverified-badge">Community</span></div>
+    </div>
+    <div class="game-card">
+      <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/962130/header.jpg" alt="Grounded" onerror="this.style.background='#2c2c2c'">
+      <div class="game-info"><span class="game-name">Grounded</span><span class="unverified-badge">Community</span></div>
+    </div>
+    <div class="game-card">
+      <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/361420/header.jpg" alt="Astroneer" onerror="this.style.background='#2c2c2c'">
+      <div class="game-info"><span class="game-name">Astroneer</span><span class="unverified-badge">Community</span></div>
+    </div>
+    <div class="game-card">
+      <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/1604030/header.jpg" alt="V Rising" onerror="this.style.background='#2c2c2c'">
+      <div class="game-info"><span class="game-name">V Rising</span><span class="unverified-badge">Community</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECURITY -->
+<section>
+  <p class="section-label">Privacy & Security</p>
+  <h2>Your Files. Your Drive. Your Control.</h2>
+  <p style="color: var(--muted);">A lot of people ask about security. Here's exactly how it works — no vague promises.</p>
+
+  <div class="security-grid">
+    <div class="security-item">
+      <div class="security-icon">🔒</div>
+      <h3>One Folder Only</h3>
+      <p>Your friend gets access to one HearthSync folder. Not your email. Not your photos. Not anything else in your Google Drive.</p>
+    </div>
+    <div class="security-item">
+      <div class="security-icon">🚫</div>
+      <h3>No Passwords</h3>
+      <p>Hearth never asks for your Google password or account credentials. It reads and writes through Google's own desktop app.</p>
+    </div>
+    <div class="security-item">
+      <div class="security-icon">📦</div>
+      <h3>No Third-Party Servers</h3>
+      <p>Your save files never touch anyone else's servers. They live in your Google Drive — controlled by you, backed up by Google.</p>
+    </div>
+    <div class="security-item">
+      <div class="security-icon">👁</div>
+      <h3>Fully Open Source</h3>
+      <p>Every single line of code is public on GitHub. Anyone can read exactly what Hearth does before running it.</p>
+    </div>
+  </div>
+
+  <div class="vt-note">
+    <strong style="color: var(--parchment);">About the Windows security warning:</strong> When you first run Hearth.exe, Windows may say "Unknown publisher." This happens because Hearth doesn't have a paid code-signing certificate yet — not because it's dangerous. Click "More info" then "Run anyway." You can verify the source code yourself at <a href="https://github.com/hearthforpc-oss/Hearth">github.com/hearthforpc-oss/Hearth</a>.
+  </div>
+</section>
+
+<!-- DONATE -->
+<div class="donate-section">
+  <p class="section-label" style="display:block; text-align:center;">Support the Project</p>
+  <h2>Hearth Is Free. Forever.</h2>
+  <p>No subscriptions. No premium tier. No ads. If Hearth saves you the cost of a game server or just makes playing with your friends easier, consider buying me a coffee.</p>
+  <a href="https://buymeacoffee.com/hearthapp" class="btn-coffee" target="_blank">☕ Buy Me a Coffee</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="https://github.com/hearthforpc-oss/Hearth/releases">Download</a>
+    <a href="https://github.com/hearthforpc-oss/Hearth">GitHub</a>
+    <a href="https://github.com/hearthforpc-oss/Hearth/blob/main/README.md">Documentation</a>
+    <a href="mailto:hearthforpc@gmail.com">Contact</a>
+    <a href="https://buymeacoffee.com/hearthapp">Donate</a>
+  </div>
+  <p>Built by Chester Houston · Buckhannon, WV · MIT License</p>
+  <p style="margin-top: 8px; font-size: 0.75rem; opacity: 0.5;">Hearth is not affiliated with any of the games listed above.</p>
+</footer>
+
+</body>
+</html>
