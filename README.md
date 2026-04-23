@@ -1,4 +1,4 @@
-# Hearth v1.4
+# Hearth v1.5
 **Play the same game world with your friends — even when you're on different schedules.**
 
 Hearth is a free app that automatically shares your game save files with your friends through Google Drive. When you stop playing, your friend can pick up right where you left off — no dedicated server needed.
@@ -190,6 +190,22 @@ C:\Users\[YourName]\AppData\LocalLow\IronGate\Valheim\worlds_local
 You should see `.fwl` files with your world names. If the folder is empty, your saves are still on Steam's servers. In that case turn Steam Cloud back on, launch Valheim, exit, turn it back off, then repeat the steps above.
 
 **Everyone in your group must turn off Steam Cloud**, otherwise Valheim saves to Steam's servers instead of your PC and Hearth cannot see them.
+
+---
+
+## Icarus Players — Read This
+
+Icarus uses Steam Cloud by default. Hearth cannot see Steam Cloud saves. You need to turn off Steam Cloud for Icarus:
+
+1. Open Steam
+2. Right-click Icarus in your library
+3. Click Properties
+4. Click General
+5. Uncheck "Keep game saves in the Steam Cloud"
+
+**Both you and your friend must do this.** If one person has it on and the other has it off, Icarus will load from Steam's servers instead of the file Hearth synced.
+
+Also make sure you have actually created a prospect and loaded into it at least once before Hearth can detect it.
 
 ---
 
