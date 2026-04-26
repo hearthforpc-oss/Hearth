@@ -1,4 +1,4 @@
-# Hearth v1.5
+# Hearth v1.6
 **Play the same game world with your friends — even when you're on different schedules.**
 
 Hearth is a free app that automatically shares your game save files with your friends through Google Drive. When you stop playing, your friend can pick up right where you left off — no dedicated server needed.
@@ -50,6 +50,7 @@ Hearth uses Google Drive folder sharing — the same way you would share a docum
 - A Windows PC
 - A Google account (free at google.com)
 - The people you play with also need a Google account
+- Google Drive for Desktop installed and set to **Mirror Files** mode
 
 That's it. No coding. No servers. No technical knowledge required.
 
@@ -68,6 +69,8 @@ That's it. No coding. No servers. No technical knowledge required.
 7. Select **Mirror Files** — this is important, Stream Files will not work
 8. Click Save and let it finish syncing
 9. Google Drive will create a new folder on your PC that looks like a regular drive. Look for it under "This PC" in File Explorer — it will show up as a drive letter like G: or F:
+
+> **Important:** Hearth requires Google Drive to be running whenever you use it. If you close Google Drive from the system tray, Hearth will warn you that the Drive folder is unreachable. Just reopen Google Drive and Hearth will recover automatically.
 
 ### Step 2 — Create a shared folder
 
@@ -97,7 +100,7 @@ That's it. No coding. No servers. No technical knowledge required.
 
 1. Go to **github.com/hearthforpc-oss/Hearth/releases**
 2. Click **Hearth.exe** to download it
-3. Double-click Hearth.exe to run it — Windows may show a warning saying "Unknown publisher." Click **More info** then **Run anyway.** This warning appears because Hearth doesn't have a paid security certificate yet. The source code is fully public if you want to verify it.
+3. Double-click Hearth.exe to run it — Windows may show a warning saying "Unknown publisher." Click **More info** then **Run anyway.** This warning appears because Hearth doesn't have a paid security certificate. The source code is fully public if you want to verify it.
 4. Hearth will open and ask you to fill in some information
 
 ### Step 5 — Set up Hearth
@@ -116,14 +119,25 @@ Click **Save** when done.
 
 ### Step 6 — Share your world
 
-> **Before you do this:** You need to have at least one saved world in your game. Just launching the game is not enough — you must create a world, load into it, and then exit. Hearth can only see worlds that have been saved to your PC. If you skip this step your world list will be empty.
+> **Before you do this:** You need to have at least one saved world in your game. Just launching the game is not enough — you must create a world, load into it, and then exit. Hearth can only see worlds that have been saved to your PC.
 
 1. In Hearth, find your game in the list
 2. You will see your worlds listed underneath
 3. Check the box next to the world you want to share
 4. Hearth will push it to your Google Drive folder automatically
-5. Your friend opens Hearth — your world will appear under their name automatically within seconds
-6. Your friend can now download it and play
+5. Your friend opens Hearth — your world will appear under their name
+
+> **World naming tip:** Make sure your world name has no spaces at the beginning or end, and avoid special characters like `\ / : * ? " < > |`. Hearth will warn you at share time if there's a problem.
+
+### Step 7 — Opt into a friend's world
+
+When a friend shares a world, it appears in your Hearth under their name marked as **Available**. It will not sync automatically until you opt in.
+
+1. Find their world in your Hearth list
+2. Check the box next to it to participate
+3. Hearth will pull the latest save and keep it in sync going forward
+
+This means you are always in control of which worlds you sync. Nothing downloads without your permission.
 
 ---
 
@@ -131,10 +145,12 @@ Click **Save** when done.
 
 Hearth keeps everyone in sync without any manual steps:
 
-- **When Hearth opens** — it immediately pulls any newer worlds from Drive before you do anything
-- **When a game is detected launching** — Hearth pulls the latest version of all shared worlds before you reach the main menu
-- **While Hearth is running** — it checks Drive every 10 seconds and pulls any changes automatically
-- **When you close a game** — Hearth waits 20 seconds then pushes your save to Drive and clears the lock
+- **When Hearth opens** — it checks Drive for any newer worlds and pulls them before you do anything
+- **When a game is detected launching** — Hearth locks all shared worlds and pulls the latest version before you reach the main menu
+- **While you're in game** — Hearth backs up your save locally every 25 minutes
+- **When you close a game** — Hearth waits for your save file to finish writing, then pushes it to Drive and clears the lock
+- **Every 10 minutes** — Hearth checks for any stale locks on your own worlds and clears them if the game is no longer running
+- **Every 30 minutes** — Hearth checks that your Google Drive folder is still accessible and warns you if it isn't
 
 You should never need to click Sync Now for normal play. It is there as a manual override if you need it.
 
@@ -168,7 +184,7 @@ Before Hearth can see your Valheim worlds, you must:
 
 After that, Hearth will find your world automatically.
 
----
+**Everyone in your group must turn off Steam Cloud for Valheim**, otherwise Valheim saves to Steam's servers instead of your PC and Hearth cannot see them.
 
 ### Getting your Valheim worlds back from Steam Cloud
 
@@ -178,48 +194,51 @@ If you have existing Valheim worlds but Hearth can't see them, Steam Cloud is li
 2. Right-click Valheim in your library → click **Properties**
 3. Click **General**
 4. Uncheck **"Keep game saves in the Steam Cloud"**
-5. Launch Valheim — Steam may ask what to do with your saves. If it asks, choose **"Keep the local files"** or **"Download from Steam Cloud"** depending on which copy you want to keep
+5. Launch Valheim — if it asks what to do with your saves, choose **"Keep the local files"**
 6. Load into your world once so Valheim writes the save to your PC
 7. Exit Valheim completely
 8. Open Hearth — your worlds should now appear
 
-If Steam does not ask and your worlds are still missing after step 7, open File Explorer and check this folder:
+If your worlds are still missing, open File Explorer and check:
 ```
 C:\Users\[YourName]\AppData\LocalLow\IronGate\Valheim\worlds_local
 ```
-You should see `.fwl` files with your world names. If the folder is empty, your saves are still on Steam's servers. In that case turn Steam Cloud back on, launch Valheim, exit, turn it back off, then repeat the steps above.
-
-**Everyone in your group must turn off Steam Cloud**, otherwise Valheim saves to Steam's servers instead of your PC and Hearth cannot see them.
+If the folder is empty, your saves are still on Steam's servers. Turn Steam Cloud back on, launch Valheim, exit, turn it back off, then repeat the steps above.
 
 ---
 
 ## Icarus Players — Read This
 
-Icarus uses Steam Cloud by default. Hearth cannot see Steam Cloud saves. You need to turn off Steam Cloud for Icarus:
+Icarus uses Steam Cloud by default. Hearth cannot see Steam Cloud saves. Turn it off:
 
 1. Open Steam
-2. Right-click Icarus in your library
-3. Click Properties
-4. Click General
-5. Uncheck "Keep game saves in the Steam Cloud"
+2. Right-click Icarus in your library → Properties → General
+3. Uncheck **"Keep game saves in the Steam Cloud"**
 
-**Both you and your friend must do this.** If one person has it on and the other has it off, Icarus will load from Steam's servers instead of the file Hearth synced.
-
-Also make sure you have actually created a prospect and loaded into it at least once before Hearth can detect it.
+**Both you and your friend must do this.** Also make sure you have created a prospect and fully loaded into it at least once before Hearth can detect it.
 
 ---
 
 ## Enshrouded Players — Read This
 
-Enshrouded saves to Steam's servers by default. Hearth cannot see those files. You need to turn off Steam Cloud for Enshrouded:
+Enshrouded saves to Steam's servers by default. Turn it off:
 
 1. Open Steam
-2. Right-click Enshrouded in your library
-3. Click Properties
-4. Click General
-5. Uncheck "Keep game saves in the Steam Cloud"
+2. Right-click Enshrouded in your library → Properties → General
+3. Uncheck **"Keep game saves in the Steam Cloud"**
 
-**Both you and your friend must do this.** If one person has it on and the other has it off, it will not work.
+**Both you and your friend must do this.**
+
+---
+
+## Sons of the Forest Players — Read This
+
+Before Hearth can sync Sons of the Forest saves, everyone in your group must have hosted at least one multiplayer lobby. This creates the required save folder on their machine.
+
+1. Launch Sons of the Forest
+2. Go to Multiplayer → Host Game → start any session
+3. Exit the game
+4. Now Hearth can sync your multiplayer saves
 
 ---
 
@@ -245,8 +264,6 @@ Hearth supports any game that saves to a local folder. To add one:
 4. Click the game you want to add, or browse manually if it isn't listed
 5. Confirm the file extension and click Add Game
 
-The game will appear in your worlds list like any other supported game.
-
 ---
 
 ## Hiding Games You Don't Play
@@ -259,12 +276,18 @@ The game will appear in your worlds list like any other supported game.
 ---
 
 ## Backups
-Hearth automatically backs up your save files before every sync. You can find your backups at:
-`C:\Users\[YourName]\Hearth_Backups\`
+Hearth automatically backs up your save files before every sync and every 25 minutes while you're in game. You can find your backups at:
+```
+C:\Users\[YourName]\Hearth_Backups\
+```
 
 ---
 
 ## Something Not Working?
+
+**Hearth says the Drive folder is unreachable**
+- Google Drive is not running. Find the Google Drive app and open it from your Start menu or system tray.
+- Once Google Drive is running the warning in Hearth will clear automatically.
 
 **I can't find my HearthSync folder in Hearth**
 - Make sure Google Drive for Desktop is installed and set to Mirror Files mode
@@ -272,8 +295,15 @@ Hearth automatically backs up your save files before every sync. You can find yo
 - The HearthSync folder should be inside that drive
 
 **My world isn't showing up in Hearth**
-- You must create a world and fully load into it at least once — just launching the game to the main menu is not enough for some games (Valheim in particular)
+- You must create a world and fully load into it at least once before Hearth can see it
 - For Valheim and Enshrouded: make sure Steam Cloud is turned off (see the game-specific sections above)
+
+**A friend's world shows as Available but won't sync**
+- Check the box next to their world to opt in — worlds from other players don't sync automatically until you participate
+
+**My world name has a warning at share time**
+- Rename the world in-game to remove any spaces at the start or end and avoid special characters
+- Then try sharing again
 
 **My game isn't in the list**
 - Click Game → Add Game to add any game manually
@@ -283,18 +313,19 @@ Hearth automatically backs up your save files before every sync. You can find yo
 - Browse to your actual save folder and select it
 
 **The lock is stuck and I can't sync**
-- In Hearth, go to Help then Unlock All
-- Or find the HearthSync folder in your Google Drive and delete the file called hearth.lock
+- Hearth automatically clears stale locks every 10 minutes if the game is no longer running
+- Or go to Help → Unlock All to clear it manually
+- Hearth will only ever clear locks that belong to you — it will never clear a lock that belongs to someone else in your group
 
 **Windows says Hearth is dangerous**
 - Click "More info" then "Run anyway"
-- This happens because Hearth doesn't have a paid security certificate yet
+- This happens because Hearth doesn't have a paid security certificate
 - The full source code is public at github.com/hearthforpc-oss/Hearth if you want to verify it
 
 ---
 
 ## Donate
-Hearth is free forever. If it saves you the cost of a game server or just makes gaming with your friends easier, consider buying me a coffee.
+Hearth is free forever. If it saves you the cost of a game server or just makes gaming with your friends easier, consider buying us a coffee.
 
 https://buymeacoffee.com/hearthapp
 
@@ -303,4 +334,4 @@ https://buymeacoffee.com/hearthapp
 ## License
 MIT License — free to use, share, and modify.
 
-Built by Chester Houston - hearthforpc@gmail.com
+hearthforpc@gmail.com
