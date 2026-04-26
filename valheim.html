@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hearth for Valheim — Share Valheim Worlds With Friends | No Server Required</title>
+<meta name="description" content="Play Valheim with friends without being locked out when the host goes offline. Hearth automatically syncs your Valheim world saves through Google Drive. Free, open source, no server needed.">
+<meta name="keywords" content="Valheim save sharing, share Valheim world friends, Valheim host offline fix, sync Valheim saves, Valheim co-op without server, transfer Valheim world, Valheim db fwl sync, free Valheim save sync">
+<meta property="og:title" content="Play Valheim Without Being Tied to One Host — Hearth">
+<meta property="og:description" content="Hearth syncs your Valheim world files automatically between players. Anyone can host. Free and open source.">
+<meta property="og:image" content="https://cdn.cloudflare.steamstatic.com/steam/apps/892970/capsule_616x353.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold:#c8972a;--dim:#7a5c10;--dark:#080608;--panel:#100e14;
+    --border:#221e2e;--text:#c4bcd0;--muted:#6a6278;--bright:#f0eaf8;
+    --ice:#7ab8d4;--red:#8a2010;--rune:#4a3a6a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--dark);color:var(--text);font-family:'Crimson Pro',Georgia,serif;font-size:17px;line-height:1.75;overflow-x:hidden;}
+
+  /* Subtle noise texture overlay */
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9998;opacity:0.4;}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:12px 32px;background:rgba(8,6,8,0.96);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);}
+  .nav-logo{font-family:'Cinzel',serif;font-weight:700;font-size:1rem;color:var(--gold);text-decoration:none;letter-spacing:0.12em;text-transform:uppercase;}
+  .nav-logo span{color:var(--muted);font-weight:400;}
+  .nav-games{display:flex;gap:20px;align-items:center;}
+  .nav-game-link{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  .nav-game-link:hover,.nav-game-link.active{color:var(--gold);}
+  .nav-cta{font-family:'Cinzel',serif;font-weight:600;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dark);background:var(--gold);text-decoration:none;padding:7px 20px;border-radius:1px;transition:background 0.2s;margin-left:12px;}
+  .nav-cta:hover{background:#e0a830;}
+
+  /* HERO */
+  .hero{position:relative;min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px 60px;overflow:hidden;}
+  .hero-bg{position:absolute;inset:0;background-image:url('https://cdn.cloudflare.steamstatic.com/steam/apps/892970/capsule_616x353.jpg');background-size:cover;background-position:center 40%;filter:brightness(0.32) saturate(0.5) hue-rotate(200deg);z-index:0;}
+  .hero-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(74,58,106,0.25) 0%,transparent 60%),linear-gradient(to bottom,rgba(8,6,8,0.2) 0%,rgba(8,6,8,0.97) 100%);}
+  /* Rune border top */
+  .hero-rune-line{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to right,transparent,var(--rune),var(--gold),var(--rune),transparent);z-index:2;}
+  .hero-content{position:relative;z-index:2;max-width:760px;}
+  .hero-eyebrow{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.3em;color:var(--ice);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:14px;}
+  .hero-eyebrow::before,.hero-eyebrow::after{content:'ᚱ';color:var(--rune);opacity:0.6;font-size:0.9rem;}
+  .hero h1{font-family:'Cinzel',serif;font-weight:700;font-size:clamp(1.8rem,4.5vw,3rem);color:var(--bright);line-height:1.15;margin-bottom:18px;text-shadow:0 0 60px rgba(122,184,212,0.2),0 2px 4px rgba(0,0,0,0.8);}
+  .hero h1 em{font-style:normal;color:var(--gold);}
+  .hero-sub{font-size:1.05rem;color:var(--text);max-width:580px;margin:0 auto 36px;font-style:italic;font-weight:300;}
+  .cta-group{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-primary{display:inline-flex;align-items:center;gap:8px;font-family:'Cinzel',serif;font-weight:700;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dark);background:var(--gold);text-decoration:none;padding:13px 32px;border-radius:1px;transition:all 0.2s;box-shadow:0 0 30px rgba(200,151,42,0.2);}
+  .btn-primary:hover{background:#e0a830;box-shadow:0 0 50px rgba(200,151,42,0.4);transform:translateY(-2px);}
+  .btn-ghost{display:inline-flex;align-items:center;font-family:'Cinzel',serif;font-weight:600;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);text-decoration:none;padding:13px 28px;border:1px solid var(--dim);border-radius:1px;transition:all 0.2s;}
+  .btn-ghost:hover{border-color:var(--gold);background:rgba(200,151,42,0.07);}
+  .hero-runes{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;margin-top:8px;}
+  .hero-rune{font-family:'Cinzel',serif;font-size:0.62rem;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;display:flex;align-items:center;gap:7px;}
+  .hero-rune::before{content:'✦';color:var(--gold);font-size:0.5rem;opacity:0.7;}
+
+  /* SECTION */
+  .section{padding:70px 24px;max-width:880px;margin:0 auto;}
+  .stag{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.3em;color:var(--gold);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:12px;}
+  .stag::before{content:'ᚢ';color:var(--rune);opacity:0.5;font-size:0.9rem;}
+  h2{font-family:'Cinzel',serif;font-size:clamp(1.4rem,3vw,2rem);color:var(--bright);margin-bottom:16px;line-height:1.3;}
+  .lead{color:var(--text);font-style:italic;margin-bottom:36px;max-width:660px;font-size:1.05rem;}
+
+  .full-band{background:var(--panel);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:70px 24px;}
+  .fbi{max-width:880px;margin:0 auto;}
+
+  /* PROBLEM BLOCKS */
+  .problem-block{background:rgba(138,32,16,0.07);border:1px solid rgba(138,32,16,0.22);border-left:3px solid var(--red);padding:28px 32px;margin-bottom:20px;position:relative;}
+  .problem-block::before{content:'⚠ KNOWN ISSUE';position:absolute;top:-1px;right:16px;font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.2em;color:var(--red);background:var(--dark);padding:2px 10px;border:1px solid rgba(138,32,16,0.3);border-top:none;opacity:0.9;}
+  .problem-block h3{font-family:'Cinzel',serif;font-weight:600;font-size:0.95rem;color:#d09070;margin-bottom:8px;}
+  .problem-block p{color:var(--text);font-size:0.93rem;margin:0;}
+
+  /* SCROLL / PARCHMENT block */
+  .scroll-block{background:rgba(200,151,42,0.04);border:1px solid rgba(200,151,42,0.15);border-left:3px solid var(--dim);padding:28px 32px;margin:24px 0;position:relative;}
+  .scroll-block h3{font-family:'Cinzel',serif;font-weight:600;font-size:0.9rem;color:var(--gold);margin-bottom:8px;letter-spacing:0.06em;}
+  .scroll-block p{font-size:0.92rem;color:var(--text);margin:0;}
+  .scroll-block code{font-family:monospace;font-size:0.82rem;color:var(--ice);background:rgba(122,184,212,0.07);padding:1px 5px;border-radius:2px;}
+
+  /* STEPS */
+  .steps{display:grid;gap:2px;margin-top:28px;}
+  .step{display:grid;grid-template-columns:70px 1fr;background:var(--panel);border:1px solid var(--border);transition:border-color 0.2s;}
+  .step:hover{border-color:var(--dim);}
+  .step-num-col{display:flex;align-items:center;justify-content:center;border-right:1px solid var(--border);padding:24px 0;}
+  .step-num{font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold);opacity:0.55;}
+  .step-body{padding:20px 24px;}
+  .step-body h3{font-family:'Cinzel',serif;font-weight:600;font-size:0.88rem;color:var(--bright);margin-bottom:5px;letter-spacing:0.06em;text-transform:uppercase;}
+  .step-body p{font-size:0.9rem;color:var(--text);margin:0;}
+
+  /* FEATURES */
+  .feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:2px;margin-top:36px;}
+  .feature-card{background:var(--panel);border:1px solid var(--border);padding:26px;transition:border-color 0.2s;}
+  .feature-card:hover{border-color:var(--dim);}
+  .feature-icon{font-size:1.3rem;margin-bottom:10px;display:block;}
+  .feature-card h3{font-family:'Cinzel',serif;font-weight:600;font-size:0.85rem;color:var(--bright);margin-bottom:7px;letter-spacing:0.06em;text-transform:uppercase;}
+  .feature-card p{font-size:0.86rem;color:var(--muted);margin:0;line-height:1.65;}
+
+  /* FAQ */
+  .faq-list{margin-top:36px;display:grid;gap:2px;}
+  .faq-item{background:var(--panel);border:1px solid var(--border);overflow:hidden;}
+  .faq-q{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:14px;color:var(--bright);font-family:'Cinzel',serif;font-weight:400;font-size:0.88rem;letter-spacing:0.04em;transition:background 0.2s;}
+  .faq-q:hover{background:rgba(200,151,42,0.04);}
+  .faq-icon{color:var(--gold);font-size:0.9rem;flex-shrink:0;transition:transform 0.3s;font-family:'Cinzel',serif;}
+  .faq-item.open .faq-icon{transform:rotate(45deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height 0.35s ease;}
+  .faq-item.open .faq-a{max-height:400px;}
+  .faq-a-inner{padding:16px 24px 20px;font-size:0.9rem;color:var(--text);line-height:1.75;border-top:1px solid var(--border);}
+  .faq-a-inner a{color:var(--gold);}
+  .faq-a-inner code{font-family:monospace;font-size:0.8rem;color:var(--ice);background:rgba(122,184,212,0.07);padding:1px 5px;}
+
+  /* BOTTOM CTA */
+  .bottom-cta{text-align:center;padding:90px 24px;position:relative;overflow:hidden;background:linear-gradient(180deg,var(--dark) 0%,#0c0810 50%,var(--dark) 100%);}
+  .bottom-cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(200,151,42,0.06) 0%,transparent 70%);pointer-events:none;}
+  .bottom-cta h2{margin-bottom:14px;position:relative;}
+  .bottom-cta p{color:var(--text);max-width:480px;margin:0 auto 36px;font-style:italic;position:relative;}
+  .rune-divider{text-align:center;font-size:1rem;letter-spacing:0.4em;color:var(--rune);opacity:0.4;padding:8px 0;margin:20px 0;}
+  .free-tag{display:inline-block;margin-top:18px;font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;position:relative;}
+
+  /* FOOTER */
+  footer{background:var(--panel);border-top:1px solid var(--border);text-align:center;padding:28px 24px;font-size:0.78rem;color:var(--muted);font-family:'Cinzel',serif;}
+  footer a{color:var(--gold);text-decoration:none;}
+  .footer-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;letter-spacing:0.08em;text-transform:uppercase;font-size:0.68rem;}
+
+  @media(max-width:600px){nav{padding:10px 16px;}.nav-games{display:none;}.hero{min-height:80vh;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Hearth <span>/ Valheim</span></a>
+  <div class="nav-games">
+    <a href="icarus.html" class="nav-game-link">Icarus</a>
+    <a href="valheim.html" class="nav-game-link active">Valheim</a>
+    <a href="enshrouded.html" class="nav-game-link">Enshrouded</a>
+    <a href="terraria.html" class="nav-game-link">Terraria</a>
+    <a href="corekeeper.html" class="nav-game-link">Core Keeper</a>
+    <a href="sonsoftheforest.html" class="nav-game-link">Sons of the Forest</a>
+  </div>
+  <a href="https://github.com/hearthforpc-oss/Hearth/releases" class="nav-cta">Download Free</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-rune-line"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Valheim — Co-op Save Sync</div>
+    <h1>Your Viking Saga Belongs<br>to <em>All of You</em></h1>
+    <p class="hero-sub">Hearth syncs your Valheim world files between players through Google Drive. No more waiting on the host. Anyone in your crew can load the world and pick up right where you left off.</p>
+    <div class="cta-group">
+      <a href="https://github.com/hearthforpc-oss/Hearth/releases" class="btn-primary">↓ Download Free</a>
+      <a href="https://github.com/hearthforpc-oss/Hearth" class="btn-ghost">View Source</a>
+    </div>
+    <div class="hero-runes">
+      <span class="hero-rune">Free Forever</span>
+      <span class="hero-rune">Open Source</span>
+      <span class="hero-rune">Your Google Drive</span>
+      <span class="hero-rune">No Server Required</span>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<div class="section">
+  <div class="stag">The Problem</div>
+  <h2>Valheim Chains Your World to One Warrior</h2>
+  <p class="lead">The host owns the .db and .fwl files. When they log off, the mead hall goes dark — no matter how many of your crew are ready to raid.</p>
+
+  <div class="problem-block">
+    <h3>Host Is Offline — Raid Cancelled</h3>
+    <p>Your crew wants to push into a new biome, but the person who created the world is busy. The longship sits idle. Every boss fight, every portal, every hour of progress is locked behind one person's schedule.</p>
+  </div>
+  <div class="problem-block">
+    <h3>Steam Cloud Makes Everything Worse</h3>
+    <p>Valheim and Steam Cloud have a notoriously rocky history. Saves get out of sync, world files disappear, and Steam Cloud has been overwriting local saves since day one. Hearth works entirely outside Steam Cloud — your saves stay on your own Google Drive where you control them.</p>
+  </div>
+  <div class="problem-block">
+    <h3>Passing .db Files Through Discord Is a Disaster Waiting to Happen</h3>
+    <p>Valheim worlds require both the .db and .fwl files. Miss one, rename one, or load the wrong version — and your world breaks. One mistake can wipe out dozens of hours of shared progress.</p>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="full-band">
+  <div class="fbi">
+    <div class="stag">How It Works</div>
+    <h2>Set It Up Once. Let Hearth Guard the Saves.</h2>
+    <p class="lead">Hearth runs in the background while you raid. When the session ends, it pushes the world automatically. When anyone else opens Hearth, it pulls the latest save before they even reach the main menu.</p>
+
+    <div class="scroll-block">
+      <h3>What Hearth Syncs for Valheim</h3>
+      <p>Hearth handles both save files Valheim requires — the <code>.db</code> (world data) and the <code>.fwl</code> (world metadata) — as a pair. It finds them automatically in <code>%USERPROFILE%\AppData\LocalLow\IronGate\Valheim\worlds_local</code>. You never need to touch the save folder directly.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num-col"><div class="step-num">I</div></div>
+        <div class="step-body"><h3>Turn Off Steam Cloud for Valheim</h3><p>Right-click Valheim in Steam → Properties → General → uncheck "Keep game saves in the Steam Cloud." Everyone in your group must do this. Steam Cloud and Hearth will conflict if left on.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num-col"><div class="step-num">II</div></div>
+        <div class="step-body"><h3>Load Into Your World Once</h3><p>Valheim doesn't write save files until you've actually entered a world. Create or load your world, get fully in, then exit back to the menu and quit. Hearth will find it after that.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num-col"><div class="step-num">III</div></div>
+        <div class="step-body"><h3>Share Your World in Hearth</h3><p>Open Hearth, find your Valheim world in the list, and check the share box. Hearth pushes both the .db and .fwl files to your shared Google Drive folder. Your crew sees the world appear on their end automatically.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num-col"><div class="step-num">IV</div></div>
+        <div class="step-body"><h3>Play — Hearth Handles the Rest</h3><p>Hearth locks the world when Valheim launches, backs it up every 25 minutes mid-session, and pushes it to Drive when you close the game. The next person to open Hearth gets the latest save automatically before they launch.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="section">
+  <div class="stag">What You Get</div>
+  <h2>Built for Crews Who Raid on Their Own Time</h2>
+  <p class="lead">No monthly server fees. No Discord file juggling. No version confusion. Just your world, always available to whoever is online.</p>
+  <div class="feature-grid">
+    <div class="feature-card"><span class="feature-icon">⚔️</span><h3>Both Files, Always</h3><p>Hearth syncs the .db and .fwl pair together every time. No more broken worlds from missing files or mismatched versions.</p></div>
+    <div class="feature-card"><span class="feature-icon">🔒</span><h3>World Locking</h3><p>When Valheim launches, Hearth locks the shared world. Nobody can accidentally push an older save while someone else is playing.</p></div>
+    <div class="feature-card"><span class="feature-icon">📦</span><h3>Mid-Raid Backups</h3><p>Local backup every 25 minutes while you play. If Valheim crashes mid-session, you're never losing more than 25 minutes of your saga.</p></div>
+    <div class="feature-card"><span class="feature-icon">☁️</span><h3>Your Drive, Your Saves</h3><p>Saves go to your own Google Drive — not our servers. No account with us, no subscription. Google backs it up. You own it.</p></div>
+    <div class="feature-card"><span class="feature-icon">👁</span><h3>Open Source</h3><p>Every line of code is public. Read exactly what Hearth does with your save files before you ever run it.</p></div>
+    <div class="feature-card"><span class="feature-icon">🆓</span><h3>Free Forever</h3><p>No trial. No premium tier. Free because the person who built it just wanted to raid Valheim with friends without scheduling conflicts.</p></div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="full-band">
+  <div class="fbi">
+    <div class="stag">FAQ</div>
+    <h2>What Vikings Actually Search For</h2>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Can I play Valheim without the host being online?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Yes — that's exactly what Hearth solves. Hearth syncs your Valheim world files to a shared Google Drive folder so any player in your group can pull the latest save and host the world themselves. No one person controls access to the world.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How do I share my Valheim world with friends?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">With Hearth, you check the share box next to your world and it pushes both the <code>.db</code> and <code>.fwl</code> files to your shared Google Drive folder automatically. Your friends open Hearth on their end and the world appears within seconds. No manual file transfers, no Discord uploads.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Where are Valheim save files on PC?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Valheim worlds are stored at <code>%USERPROFILE%\AppData\LocalLow\IronGate\Valheim\worlds_local</code>. Each world has two files: a <code>.db</code> and a <code>.fwl</code> — both are required. If you've been using Steam Cloud, your saves may be at <code>...\Steam\userdata\[SteamID]\892970\remote\worlds</code> instead. Hearth finds the right location automatically.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How do I transfer a Valheim world to another player?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Hearth handles this automatically every session. For a one-time manual transfer, you need both the <code>.db</code> and <code>.fwl</code> files for your world from the worlds_local folder. Do not rename them — Valheim will not recognize renamed world files. Hearth handles the pairing and transfer cleanly without any renaming risk.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Do I need to turn off Steam Cloud for Valheim?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Yes. Steam Cloud and Hearth will conflict — Steam Cloud will try to sync saves to its own servers while Hearth is syncing to Google Drive. Everyone in your group must turn off Steam Cloud for Valheim: right-click Valheim in Steam → Properties → General → uncheck "Keep game saves in the Steam Cloud." If you have existing worlds on Steam Cloud, you can move them to local through the in-game save management menu.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">My Valheim world isn't showing up in Hearth — why?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Valheim doesn't write save files until you've actually loaded into the world in-game. Just launching to the main menu isn't enough. Load into your world, wait until you're fully in, then exit to the main menu and quit Valheim. Hearth will find the world after that. Also check that Steam Cloud is disabled — if it's on, saves may be on Steam's servers instead of your local drive.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What's the difference between Hearth and a Valheim dedicated server?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">A dedicated server runs 24/7 so anyone can join anytime without a host. That costs money to rent or requires a spare PC running constantly. Hearth is for groups who play together — one person hosts from their machine, and Hearth makes sure everyone always has the latest save so any of them can be that host. No ongoing costs, no server management, no port forwarding.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is Hearth free? Are there any costs?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Hearth is completely free. The only thing your group needs is a shared Google Drive folder — and Google Drive is free up to 15GB, which is far more than any Valheim world will ever need. No subscription, no premium tier, no account on our end required.</div></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM CTA -->
+<div class="bottom-cta">
+  <div class="rune-divider">ᚱ ᚢ ᚾ ᚨ ᚱ</div>
+  <h2>Your Longship Is Ready.<br><em style="color:var(--gold);font-style:normal;">Stop Waiting for the Jarl to Log On.</em></h2>
+  <p>Free download. Open source. Takes about five minutes to set up. No account required — just a Google Drive folder your crew shares.</p>
+  <a href="https://github.com/hearthforpc-oss/Hearth/releases" class="btn-primary">↓ Download Hearth Free</a>
+  <br>
+  <span class="free-tag">✦ free forever &nbsp;·&nbsp; open source &nbsp;·&nbsp; no subscription</span>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="icarus.html">Icarus</a>
+    <a href="valheim.html">Valheim</a>
+    <a href="enshrouded.html">Enshrouded</a>
+    <a href="terraria.html">Terraria</a>
+    <a href="https://github.com/hearthforpc-oss/Hearth/releases">Download</a>
+    <a href="https://github.com/hearthforpc-oss/Hearth">GitHub</a>
+    <a href="mailto:hearthforpc@gmail.com">Contact</a>
+    <a href="https://buymeacoffee.com/hearthapp">Donate</a>
+  </div>
+  <p>Built by the Hearth team · MIT License</p>
+  <p style="margin-top:6px;font-size:0.68rem;opacity:0.45;">Hearth is not affiliated with Valheim, Iron Gate AB, or any game listed on this site.</p>
+</footer>
+
+<script>
+function toggleFaq(btn){
+  const item=btn.closest('.faq-item');
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el=>el.classList.remove('open'));
+  if(!isOpen)item.classList.add('open');
+}
+</script>
+</body>
+</html>
