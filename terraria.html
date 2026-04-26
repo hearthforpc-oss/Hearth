@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hearth for Terraria — Share Terraria Worlds With Friends | Free Save Sync</title>
+<meta name="description" content="Share Terraria and tModLoader worlds with friends without being tied to one host. Hearth syncs your .wld save files through Google Drive automatically. Free, open source, no server needed.">
+<meta name="keywords" content="Terraria save sharing, share Terraria world friends, Terraria host offline fix, sync Terraria saves, tModLoader save sharing, Terraria wld file sync, free Terraria save sync, transfer Terraria world co-op">
+<meta property="og:title" content="Share Terraria Worlds With Friends — Hearth">
+<meta property="og:description" content="Hearth syncs your Terraria world files automatically between players. Anyone can host. Free and open source. Works with tModLoader too.">
+<meta property="og:image" content="https://cdn.cloudflare.steamstatic.com/steam/apps/105600/capsule_616x353.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Exo+2:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root{--green:#4a9a3a;--dim:#2a6a1a;--dark:#060a06;--panel:#0a100a;--border:#142014;--text:#b8d4a8;--muted:#5a7a4a;--bright:#d8f4c8;--sky:#5a9ad4;--red:#8a1010;}
+  *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+  body{background:var(--dark);color:var(--text);font-family:'Exo 2',sans-serif;font-size:17px;line-height:1.75;overflow-x:hidden;}
+  /* pixel grid bg */
+  body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(74,154,58,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(74,154,58,0.015) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:9998;}
+  nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:12px 32px;background:rgba(6,10,6,0.96);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);}
+  .nav-logo{font-family:'Exo 2',sans-serif;font-weight:700;font-size:1rem;color:var(--green);text-decoration:none;letter-spacing:0.12em;text-transform:uppercase;}
+  .nav-logo span{color:var(--muted);font-weight:400;}
+  .nav-games{display:flex;gap:20px;align-items:center;}
+  .nav-game-link{font-family:'Exo 2',sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s;}
+  .nav-game-link:hover,.nav-game-link.active{color:var(--green);}
+  .nav-cta{font-family:'Exo 2',sans-serif;font-weight:700;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dark);background:var(--green);text-decoration:none;padding:7px 20px;border:2px solid var(--dim);transition:background 0.2s;margin-left:12px;}
+  .nav-cta:hover{background:#5ab84a;}
+  .hero{position:relative;min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px 60px;overflow:hidden;}
+  .hero-bg{position:absolute;inset:0;background-image:url('https://cdn.cloudflare.steamstatic.com/steam/apps/105600/capsule_616x353.jpg');background-size:cover;background-position:center 40%;filter:brightness(0.3) saturate(0.7);z-index:0;}
+  .hero-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(74,154,58,0.12) 0%,transparent 60%),linear-gradient(to bottom,rgba(6,10,6,0.2) 0%,rgba(6,10,6,0.97) 100%);}
+  .hero-content{position:relative;z-index:2;max-width:760px;}
+  .hero-label{display:inline-flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--green);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:20px;padding:5px 14px;border:1px solid var(--dim);background:rgba(74,154,58,0.06);}
+  .hero h1{font-family:'Exo 2',sans-serif;font-weight:700;font-size:clamp(1.8rem,4.5vw,3rem);color:var(--bright);line-height:1.15;margin-bottom:18px;text-shadow:0 0 60px rgba(74,154,58,0.3);}
+  .hero h1 em{font-style:normal;color:var(--green);}
+  .hero-sub{font-size:1rem;color:var(--text);max-width:580px;margin:0 auto 36px;font-weight:300;}
+  .cta-group{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-primary{display:inline-flex;align-items:center;gap:8px;font-family:'Exo 2',sans-serif;font-weight:700;font-size:0.9rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dark);background:var(--green);text-decoration:none;padding:12px 32px;border:2px solid var(--dim);transition:all 0.2s;box-shadow:0 0 30px rgba(74,154,58,0.2);}
+  .btn-primary:hover{background:#5ab84a;box-shadow:0 0 50px rgba(74,154,58,0.4);transform:translateY(-2px);}
+  .btn-ghost{display:inline-flex;align-items:center;font-family:'Exo 2',sans-serif;font-weight:600;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);text-decoration:none;padding:12px 28px;border:1px solid var(--dim);transition:all 0.2s;}
+  .btn-ghost:hover{border-color:var(--green);background:rgba(74,154,58,0.06);}
+  .hero-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;}
+  .hero-stat{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;display:flex;align-items:center;gap:7px;}
+  .hero-stat::before{content:'>';color:var(--green);opacity:0.7;}
+  .section{padding:70px 24px;max-width:880px;margin:0 auto;}
+  .stag{font-family:'Share Tech Mono',monospace;font-size:0.64rem;letter-spacing:0.25em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+  h2{font-family:'Exo 2',sans-serif;font-weight:700;font-size:clamp(1.5rem,3vw,2.1rem);color:var(--bright);margin-bottom:16px;}
+  .lead{color:var(--text);font-weight:300;margin-bottom:36px;max-width:660px;}
+  .full-band{background:var(--panel);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:70px 24px;}
+  .fbi{max-width:880px;margin:0 auto;}
+  .problem-block{background:rgba(138,16,16,0.07);border:1px solid rgba(138,16,16,0.22);border-left:3px solid var(--red);padding:28px 32px;margin-bottom:20px;position:relative;}
+  .problem-block::before{content:'KNOWN ISSUE';position:absolute;top:-1px;right:16px;font-family:'Share Tech Mono',monospace;font-size:0.52rem;letter-spacing:0.2em;color:var(--red);background:var(--dark);padding:2px 8px;border:1px solid rgba(138,16,16,0.3);border-top:none;}
+  .problem-block h3{font-family:'Exo 2',sans-serif;font-weight:700;font-size:1rem;color:#d08080;margin-bottom:8px;}
+  .problem-block p{color:var(--text);font-size:0.92rem;margin:0;font-weight:300;}
+  /* tModLoader callout */
+  .tmod-block{background:rgba(90,154,212,0.06);border:1px solid rgba(90,154,212,0.2);border-left:3px solid var(--sky);padding:28px 32px;margin:24px 0;}
+  .tmod-block h3{font-family:'Exo 2',sans-serif;font-weight:700;font-size:1rem;color:#90c4e8;margin-bottom:8px;}
+  .tmod-block p{color:var(--text);font-size:0.92rem;margin:0;font-weight:300;}
+  .steps{display:grid;gap:2px;margin-top:28px;}
+  .step{display:grid;grid-template-columns:70px 1fr;background:var(--panel);border:1px solid var(--border);transition:border-color 0.2s;}
+  .step:hover{border-color:var(--dim);}
+  .step-num-col{display:flex;align-items:center;justify-content:center;border-right:1px solid var(--border);padding:24px 0;}
+  .step-num{font-family:'Share Tech Mono',monospace;font-size:1.1rem;color:var(--green);opacity:0.6;}
+  .step-body{padding:20px 24px;}
+  .step-body h3{font-family:'Exo 2',sans-serif;font-weight:700;font-size:0.92rem;color:var(--bright);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.04em;}
+  .step-body p{font-size:0.9rem;color:var(--text);margin:0;font-weight:300;}
+  .feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:2px;margin-top:36px;}
+  .feature-card{background:var(--panel);border:1px solid var(--border);padding:26px;transition:border-color 0.2s;}
+  .feature-card:hover{border-color:var(--dim);}
+  .feature-icon{font-size:1.3rem;margin-bottom:10px;display:block;}
+  .feature-card h3{font-family:'Exo 2',sans-serif;font-weight:700;font-size:0.88rem;color:var(--bright);margin-bottom:7px;text-transform:uppercase;letter-spacing:0.04em;}
+  .feature-card p{font-size:0.86rem;color:var(--muted);margin:0;line-height:1.65;}
+  .faq-list{margin-top:36px;display:grid;gap:2px;}
+  .faq-item{background:var(--panel);border:1px solid var(--border);overflow:hidden;}
+  .faq-q{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:14px;color:var(--bright);font-family:'Exo 2',sans-serif;font-weight:600;font-size:0.92rem;transition:background 0.2s;}
+  .faq-q:hover{background:rgba(74,154,58,0.04);}
+  .faq-icon{color:var(--green);font-size:0.9rem;flex-shrink:0;transition:transform 0.3s;}
+  .faq-item.open .faq-icon{transform:rotate(45deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height 0.35s ease;}
+  .faq-item.open .faq-a{max-height:400px;}
+  .faq-a-inner{padding:16px 24px 20px;font-size:0.9rem;color:var(--text);line-height:1.75;border-top:1px solid var(--border);font-weight:300;}
+  .faq-a-inner a{color:var(--green);}
+  .faq-a-inner code{font-family:monospace;color:var(--green);font-size:0.82rem;}
+  .bottom-cta{text-align:center;padding:90px 24px;position:relative;overflow:hidden;background:linear-gradient(180deg,var(--dark) 0%,#060e06 50%,var(--dark) 100%);}
+  .bottom-cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(74,154,58,0.07) 0%,transparent 70%);pointer-events:none;}
+  .bottom-cta h2{margin-bottom:14px;position:relative;}
+  .bottom-cta p{color:var(--text);max-width:480px;margin:0 auto 36px;font-weight:300;position:relative;}
+  .free-tag{display:inline-block;margin-top:18px;font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;}
+  footer{background:var(--panel);border-top:1px solid var(--border);text-align:center;padding:28px 24px;font-size:0.78rem;color:var(--muted);}
+  footer a{color:var(--green);text-decoration:none;}
+  .footer-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;font-family:'Exo 2',sans-serif;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;font-size:0.7rem;}
+  @media(max-width:600px){nav{padding:10px 16px;}.nav-games{display:none;}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">Hearth <span>/ Terraria</span></a>
+  <div class="nav-games">
+    <a href="icarus.html" class="nav-game-link">Icarus</a>
+    <a href="valheim.html" class="nav-game-link">Valheim</a>
+    <a href="enshrouded.html" class="nav-game-link">Enshrouded</a>
+    <a href="terraria.html" class="nav-game-link active">Terraria</a>
+    <a href="corekeeper.html" class="nav-game-link">Core Keeper</a>
+    <a href="sonsoftheforest.html" class="nav-game-link">Sons of the Forest</a>
+  </div>
+  <a href="https://github.com/hearthforpc-oss/Hearth/releases" class="nav-cta">Download Free</a>
+</nav>
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-label">Terraria + tModLoader — Co-op Save Sync</div>
+    <h1>Your World. Your Builds.<br><em>Anyone Can Host.</em></h1>
+    <p class="hero-sub">Hearth syncs your Terraria world files through Google Drive automatically. No more losing access to hundreds of hours of shared builds because the host isn't online. Works with vanilla Terraria and tModLoader.</p>
+    <div class="cta-group">
+      <a href="https://github.com/hearthforpc-oss/Hearth/releases" class="btn-primary">↓ Download Free</a>
+      <a href="https://github.com/hearthforpc-oss/Hearth" class="btn-ghost">View Source</a>
+    </div>
+    <div class="hero-stats">
+      <span class="hero-stat">Free Forever</span>
+      <span class="hero-stat">Vanilla + tModLoader</span>
+      <span class="hero-stat">Your Google Drive</span>
+      <span class="hero-stat">No Server Required</span>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <div class="stag">The Problem</div>
+  <h2>Terraria Has Had This Problem for Over a Decade</h2>
+  <p class="lead">The host owns the .wld file. When they're offline, your shared world — every build, every boss defeated, every chest filled — is completely inaccessible.</p>
+  <div class="problem-block">
+    <h3>Host Goes Offline — World Is Gone</h3>
+    <p>Your group has fought through the Wall of Flesh, built elaborate bases, and organized hundreds of chests. Then the host disappears for a week. All of that progress is locked on their machine with no way to continue.</p>
+  </div>
+  <div class="problem-block">
+    <h3>Manual .wld File Transfers Are Error-Prone</h3>
+    <p>Terraria worlds need both the .wld and .wld.bak files. Send the wrong one, load an outdated version, or accidentally overwrite the latest save — and hours of work vanish. There's no version tracking, no safety net.</p>
+  </div>
+  <div class="problem-block">
+    <h3>tModLoader Makes It Even More Complicated</h3>
+    <p>tModLoader stores saves in a completely different location from vanilla Terraria. On top of that, world files are tied to specific mod versions — sending a file without the right mod loadout causes crashes and corruption.</p>
+  </div>
+  <div class="tmod-block">
+    <h3>tModLoader Support Built In</h3>
+    <p>Hearth handles both vanilla Terraria and tModLoader saves. It automatically detects which save location your world is in — <code style="font-family:monospace;color:var(--sky);">Documents/My Games/Terraria/Worlds</code> for vanilla, <code style="font-family:monospace;color:var(--sky);">Documents/My Games/Terraria/tModLoader/Worlds</code> for modded — and syncs the right files.</p>
+  </div>
+</div>
+<div class="full-band">
+  <div class="fbi">
+    <div class="stag">How It Works</div>
+    <h2>Set It Up Once. Everyone Gets the World.</h2>
+    <p class="lead">Hearth handles the .wld and .wld.bak files together automatically. No version confusion, no missing files, no wrong saves loaded.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num-col"><div class="step-num">01</div></div>
+        <div class="step-body"><h3>Point Hearth at Your Google Drive Folder</h3><p>One-time setup. Tell Hearth where your shared HearthSync folder is on your Google Drive. Everyone in your group points to the same folder.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num-col"><div class="step-num">02</div></div>
+        <div class="step-body"><h3>Share Your Terraria World</h3><p>Check the box next to your world in Hearth. It pushes both the .wld and .wld.bak files to Drive immediately. Your group sees the world on their end within seconds.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num-col"><div class="step-num">03</div></div>
+        <div class="step-body"><h3>Launch Terraria — Hearth Locks and Syncs</h3><p>When Terraria launches, Hearth locks the shared world and pulls the freshest version from Drive. You're always starting from the latest save, not a stale copy from last week.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num-col"><div class="step-num">04</div></div>
+        <div class="step-body"><h3>Close the Game — Progress Pushed Automatically</h3><p>When Terraria closes, Hearth pushes the updated .wld file to Drive. The next player pulls it automatically when they open Hearth. Use Host & Play in Terraria to start a session with that world.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <div class="stag">What You Get</div>
+  <h2>Built for Groups Who Dig on Their Own Schedule</h2>
+  <p class="lead">No server management. No .wld file juggling through Discord. No accidentally loading the wrong version. Just your world, always available.</p>
+  <div class="feature-grid">
+    <div class="feature-card"><span class="feature-icon">⛏️</span><h3>Both Files, Always</h3><p>Hearth syncs the .wld and .wld.bak pair together. Never a broken world from a missing backup file.</p></div>
+    <div class="feature-card"><span class="feature-icon">🔧</span><h3>tModLoader Ready</h3><p>Automatically detects and syncs tModLoader worlds from the correct save location. Works alongside your mod manager without conflicts.</p></div>
+    <div class="feature-card"><span class="feature-icon">🔒</span><h3>World Locking</h3><p>When Terraria launches, Hearth locks the shared world. No accidental overwrites while someone is mid-session.</p></div>
+    <div class="feature-card"><span class="feature-icon">📦</span><h3>Mid-Session Backups</h3><p>Local backups every 25 minutes while you play. Never lose more than 25 minutes of building, farming, or boss prep.</p></div>
+    <div class="feature-card"><span class="feature-icon">☁️</span><h3>Your Drive, Your Data</h3><p>Saves go to your own Google Drive. No third-party servers, no subscription, no account with us required.</p></div>
+    <div class="feature-card"><span class="feature-icon">🆓</span><h3>Free Forever</h3><p>No trial. No premium tier. Free because Terraria has enough to grind for without paying for access to your own world.</p></div>
+  </div>
+</div>
+<div class="full-band">
+  <div class="fbi">
+    <div class="stag">FAQ</div>
+    <h2>What Terraria Players Actually Search For</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How do I share a Terraria world with friends?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">With Hearth, you check the share box next to your world and it pushes both the .wld and .wld.bak files to your shared Google Drive folder automatically. Your friends open Hearth and the world appears on their end. They can then load it using Host & Play in Terraria's multiplayer menu.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Where are Terraria world save files on PC?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Vanilla Terraria saves worlds to <code>Documents\My Games\Terraria\Worlds</code>. Each world has a <code>.wld</code> and a <code>.wld.bak</code> file — you need both. tModLoader saves to <code>Documents\My Games\Terraria\tModLoader\Worlds</code> separately. Hearth detects the right location automatically.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Can I share a tModLoader world with Hearth?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Yes. Hearth supports tModLoader worlds alongside vanilla Terraria. It detects both save locations and syncs whichever world you share. Your group still needs to have the same mods installed — Hearth syncs the world file, not the mod loadout itself. Everyone should be running the same mods through tModLoader's mod browser before launching.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Can I play Terraria without the host being online?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Yes — that's exactly what Hearth is for. Hearth syncs your world file to a shared Google Drive folder so any player in your group can pull the latest save and host it themselves using Terraria's built-in Host & Play option. Nobody is locked out when the original host isn't around.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Do I need to send both the .wld and .wld.bak files?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Yes — Terraria requires both files for a world to load correctly. Missing the .wld.bak can cause the game to throw errors or roll back progress. Hearth syncs both files together automatically so nothing ever gets left behind.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is Hearth free? What does it cost?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Hearth is completely free. All you need is a shared Google Drive folder — free up to 15GB, which is far more than any Terraria world will ever use. No subscription, no premium tier, no account with us required.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="bottom-cta">
+  <h2>Your World Is Ready.<br><em style="color:var(--green);font-style:normal;">Anyone Should Be Able to Host It.</em></h2>
+  <p>Free download. Open source. Works with vanilla Terraria and tModLoader. Five minutes to set up — no account required on our end.</p>
+  <a href="https://github.com/hearthforpc-oss/Hearth/releases" class="btn-primary">↓ Download Hearth Free</a>
+  <br><span class="free-tag">> free forever · open source · vanilla + tmodloader</span>
+</div>
+<footer>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="icarus.html">Icarus</a>
+    <a href="valheim.html">Valheim</a>
+    <a href="enshrouded.html">Enshrouded</a>
+    <a href="terraria.html">Terraria</a>
+    <a href="corekeeper.html">Core Keeper</a>
+    <a href="sonsoftheforest.html">Sons of the Forest</a>
+    <a href="https://github.com/hearthforpc-oss/Hearth/releases">Download</a>
+    <a href="https://github.com/hearthforpc-oss/Hearth">GitHub</a>
+    <a href="mailto:hearthforpc@gmail.com">Contact</a>
+    <a href="https://buymeacoffee.com/hearthapp">Donate</a>
+  </div>
+  <p>Built by the Hearth team · MIT License</p>
+  <p style="margin-top:6px;font-size:0.68rem;opacity:0.45;">Hearth is not affiliated with Terraria, Re-Logic, tModLoader, or any game listed on this site.</p>
+</footer>
+<script>function toggleFaq(btn){const item=btn.closest('.faq-item');const isOpen=item.classList.contains('open');document.querySelectorAll('.faq-item.open').forEach(el=>el.classList.remove('open'));if(!isOpen)item.classList.add('open');}</script>
+</body>
+</html>

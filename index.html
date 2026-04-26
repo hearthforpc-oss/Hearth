@@ -65,7 +65,6 @@
     z-index: 3;
     filter: drop-shadow(0 0 60px rgba(232, 93, 4, 0.4));
     animation: logoFloat 4s ease-in-out infinite;
-    mix-blend-mode: lighten;
   }
 
   @keyframes logoFloat {
@@ -295,6 +294,9 @@
     border-radius: 2px;
     overflow: hidden;
     transition: all 0.3s;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
   }
 
   .game-card:hover {
@@ -462,8 +464,8 @@
 
 <!-- HERO -->
 <div class="hero">
-  <img src="hearth_logo.png" alt="Hearth" class="hero-logo">
-  <p class="hero-tagline">Built by a window tinter in West Virginia for himself and cousin to play games together</p>
+  <img src="hearth_logo.jpg" alt="Hearth" class="hero-logo">
+  <p class="hero-tagline">Built by gamers, for gamers — because scheduling shouldn't be a boss fight</p>
   <h1 class="hero-headline">Share Game Worlds With Your Crew</h1>
   <p class="hero-sub">No dedicated server. No subscriptions. No technical knowledge required. Just you, your friends, and the same world — whenever you're ready to play.</p>
   <div>
@@ -483,7 +485,7 @@
   <div class="origin">
     <p>Me and my cousin play Icarus together. He works nights. When he's not online, the server closes. I got frustrated one night — couldn't get back into a world we'd spent weeks building. So I asked myself: why can't save files just sync automatically between friends, like Google Drive syncs documents?</p>
     <p>Ten days later, Hearth existed. No coding background. No roadmap. Just a problem that needed solving and enough stubbornness to see it through.</p>
-    <p class="origin-attribution">— Chester Houston, Buckhannon WV</p>
+    <p class="origin-attribution">— The Hearth Team</p>
   </div>
 </div>
 
@@ -532,30 +534,30 @@
   <p style="color: var(--muted); margin-bottom: 0;">These games are confirmed working by real players. Any game not on the list can be added manually through Game → Add Game.</p>
 
   <div class="games-grid">
-    <div class="game-card">
+    <a href="icarus.html" class="game-card">
       <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/1149460/header.jpg" alt="Icarus" onerror="this.style.background='#2c2c2c';this.style.height='94px'">
       <div class="game-info"><span class="game-name">Icarus</span><span class="verified-badge">✦ Verified</span></div>
-    </div>
-    <div class="game-card">
+    </a>
+    <a href="valheim.html" class="game-card">
       <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/892970/header.jpg" alt="Valheim" onerror="this.style.background='#2c2c2c'">
       <div class="game-info"><span class="game-name">Valheim</span><span class="verified-badge">✦ Verified</span></div>
-    </div>
-    <div class="game-card">
+    </a>
+    <a href="enshrouded.html" class="game-card">
       <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/1203620/header.jpg" alt="Enshrouded" onerror="this.style.background='#2c2c2c'">
       <div class="game-info"><span class="game-name">Enshrouded</span><span class="verified-badge">✦ Verified</span></div>
-    </div>
-    <div class="game-card">
+    </a>
+    <a href="corekeeper.html" class="game-card">
       <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/1621690/header.jpg" alt="Core Keeper" onerror="this.style.background='#2c2c2c'">
       <div class="game-info"><span class="game-name">Core Keeper</span><span class="verified-badge">✦ Verified</span></div>
-    </div>
-    <div class="game-card">
+    </a>
+    <a href="terraria.html" class="game-card">
       <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/105600/header.jpg" alt="Terraria" onerror="this.style.background='#2c2c2c'">
       <div class="game-info"><span class="game-name">Terraria</span><span class="verified-badge">✦ Verified</span></div>
-    </div>
-    <div class="game-card">
+    </a>
+    <a href="sonsoftheforest.html" class="game-card">
       <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/1326470/header.jpg" alt="Sons of the Forest" onerror="this.style.background='#2c2c2c'">
       <div class="game-info"><span class="game-name">Sons of the Forest</span><span class="verified-badge">✦ Verified</span></div>
-    </div>
+    </a>
     <div class="game-card">
       <img class="game-art" src="https://cdn.cloudflare.steamstatic.com/steam/apps/251570/header.jpg" alt="7 Days to Die" onerror="this.style.background='#2c2c2c'">
       <div class="game-info"><span class="game-name">7 Days to Die</span><span class="unverified-badge">Community</span></div>
@@ -621,20 +623,28 @@
 <div class="donate-section">
   <p class="section-label" style="display:block; text-align:center;">Support the Project</p>
   <h2>Hearth Is Free. Forever.</h2>
-  <p>No subscriptions. No premium tier. No ads. If Hearth saves you the cost of a game server or just makes playing with your friends easier, consider buying me a coffee.</p>
+  <p>No subscriptions. No premium tier. No ads. If Hearth saves you the cost of a game server or just makes playing with your friends easier, consider buying us a coffee.</p>
   <a href="https://buymeacoffee.com/hearthapp" class="btn-coffee" target="_blank">☕ Buy Me a Coffee</a>
 </div>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-links">
+    <a href="icarus.html">Icarus</a>
+    <a href="valheim.html">Valheim</a>
+    <a href="enshrouded.html">Enshrouded</a>
+    <a href="terraria.html">Terraria</a>
+    <a href="corekeeper.html">Core Keeper</a>
+    <a href="sonsoftheforest.html">Sons of the Forest</a>
+  </div>
+  <div class="footer-links" style="margin-top:8px;">
     <a href="https://github.com/hearthforpc-oss/Hearth/releases">Download</a>
     <a href="https://github.com/hearthforpc-oss/Hearth">GitHub</a>
     <a href="https://github.com/hearthforpc-oss/Hearth/blob/main/README.md">Documentation</a>
     <a href="mailto:hearthforpc@gmail.com">Contact</a>
     <a href="https://buymeacoffee.com/hearthapp">Donate</a>
   </div>
-  <p>Built by Chester Houston · Buckhannon, WV · MIT License</p>
+  <p>Built by the Hearth team · MIT License</p>
   <p style="margin-top: 8px; font-size: 0.75rem; opacity: 0.5;">Hearth is not affiliated with any of the games listed above.</p>
 </footer>
 

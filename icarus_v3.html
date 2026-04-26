@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hearth for Icarus</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal:#c8912a;--dim:#8a5e10;--dark:#0c0a07;--panel:#141008;
+    --border:#2a2010;--text:#c4ab80;--muted:#7a6040;--bright:#f0ddb0;
+    --warn:#e07020;--red:#a03010;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--dark);color:var(--text);font-family:'Exo 2',sans-serif;font-size:16px;line-height:1.7;overflow-x:hidden;}
+  body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(200,145,42,0.018) 2px,rgba(200,145,42,0.018) 4px);pointer-events:none;z-index:9999;}
+
+  nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:12px 32px;background:rgba(12,10,7,0.96);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);}
+  .nav-logo{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal);text-decoration:none;letter-spacing:0.15em;text-transform:uppercase;}
+  .nav-logo span{color:var(--muted);font-weight:400;}
+  .nav-cta{font-family:'Rajdhani',sans-serif;font-weight:600;font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--dark);background:var(--teal);text-decoration:none;padding:7px 20px;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background 0.2s;}
+  .nav-cta:hover{background:#e0a830;}
+
+  .hero{position:relative;min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px 60px;overflow:hidden;}
+  .hero-bg{position:absolute;inset:0;background-image:url('https://cdn.cloudflare.steamstatic.com/steam/apps/1149460/capsule_616x353.jpg');background-size:cover;background-position:center center;filter:brightness(0.38) saturate(0.7);z-index:0;}
+  .hero-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(200,145,42,0.1) 0%,transparent 60%),linear-gradient(to bottom,rgba(12,10,7,0.3) 0%,rgba(12,10,7,0.95) 100%);}
+  .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(200,145,42,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(200,145,42,0.05) 1px,transparent 1px);background-size:60px 60px;z-index:1;animation:gridScroll 20s linear infinite;}
+  @keyframes gridScroll{0%{background-position:0 0;}100%{background-position:60px 60px;}}
+  .hero-content{position:relative;z-index:2;max-width:760px;}
+  .hero-label{display:inline-flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--teal);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:20px;padding:5px 14px;border:1px solid var(--dim);background:rgba(200,145,42,0.07);}
+  .hero-label::before{content:'';width:5px;height:5px;background:var(--teal);border-radius:50%;animation:pulse 2s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 6px var(--teal);}50%{opacity:0.3;box-shadow:none;}}
+  .hero h1{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:clamp(1.8rem,4.5vw,3rem);color:var(--bright);line-height:1.15;margin-bottom:18px;text-shadow:0 0 40px rgba(200,145,42,0.35);}
+  .hero h1 em{font-style:normal;color:var(--teal);}
+  .hero-sub{font-size:1rem;color:var(--text);max-width:580px;margin:0 auto 36px;font-weight:300;}
+  .cta-group{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+  .btn-primary{display:inline-flex;align-items:center;gap:8px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--dark);background:var(--teal);text-decoration:none;padding:12px 32px;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);transition:all 0.2s;box-shadow:0 0 30px rgba(200,145,42,0.25);}
+  .btn-primary:hover{background:#e0a830;box-shadow:0 0 50px rgba(200,145,42,0.45);transform:translateY(-2px);}
+  .btn-ghost{display:inline-flex;align-items:center;font-family:'Rajdhani',sans-serif;font-weight:600;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal);text-decoration:none;padding:12px 28px;border:1px solid var(--dim);clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);transition:all 0.2s;}
+  .btn-ghost:hover{border-color:var(--teal);background:rgba(200,145,42,0.07);}
+  .hero-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;}
+  .hero-stat{font-family:'Share Tech Mono',monospace;font-size:0.66rem;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;display:flex;align-items:center;gap:7px;}
+  .hero-stat::before{content:'//';color:var(--teal);opacity:0.6;}
+
+  .section{padding:70px 24px;max-width:880px;margin:0 auto;}
+  .stag{font-family:'Share Tech Mono',monospace;font-size:0.64rem;letter-spacing:0.25em;color:var(--teal);text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+  .stag::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent);max-width:100px;}
+  h2{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:clamp(1.5rem,3vw,2rem);color:var(--bright);margin-bottom:14px;letter-spacing:0.03em;}
+  .lead{color:var(--text);font-weight:300;margin-bottom:36px;max-width:660px;}
+
+  .full-band{background:var(--panel);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:70px 24px;}
+  .fbi{max-width:880px;margin:0 auto;}
+
+  .problem-block{background:rgba(160,48,16,0.08);border:1px solid rgba(160,48,16,0.25);border-left:3px solid var(--red);padding:28px 32px;margin-bottom:20px;position:relative;}
+  .problem-block::before{content:'KNOWN ISSUE';position:absolute;top:-1px;right:16px;font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.2em;color:var(--red);background:var(--dark);padding:2px 8px;border:1px solid rgba(160,48,16,0.3);border-top:none;}
+  .problem-block h3{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1rem;color:#d08060;margin-bottom:6px;}
+  .problem-block p{color:var(--text);font-size:0.9rem;margin:0;}
+
+  .terminal{background:#080600;border:1px solid var(--border);padding:20px 24px;margin-top:28px;position:relative;font-family:'Share Tech Mono',monospace;font-size:0.78rem;line-height:1.9;}
+  .terminal::before{content:'HEARTH // ICARUS SAVE PROTOCOL';position:absolute;top:-1px;left:16px;font-size:0.55rem;letter-spacing:0.2em;color:var(--teal);background:#020a09;padding:2px 10px;border:1px solid var(--border);border-top:none;}
+  .t-line{display:flex;gap:12px;}
+  .t-prompt{color:var(--teal);flex-shrink:0;}
+  .t-text{color:var(--text);}
+  .t-comment{color:var(--muted);}
+  .t-success{color:#4ec94e;}
+  .t-warn{color:var(--warn);}
+
+  .steps{display:grid;gap:2px;margin-top:28px;}
+  .step{display:grid;grid-template-columns:70px 1fr;background:var(--panel);border:1px solid var(--border);transition:border-color 0.2s;position:relative;overflow:hidden;}
+  .step:hover{border-color:var(--dim);}
+  .step-num-col{display:flex;align-items:center;justify-content:center;border-right:1px solid var(--border);padding:24px 0;}
+  .step-num{font-family:'Share Tech Mono',monospace;font-size:1.2rem;color:var(--teal);opacity:0.6;}
+  .step-body{padding:20px 24px;}
+  .step-body h3{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.95rem;color:var(--bright);margin-bottom:5px;letter-spacing:0.06em;text-transform:uppercase;}
+  .step-body p{font-size:0.88rem;color:var(--text);margin:0;font-weight:300;}
+
+  .feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:2px;margin-top:36px;}
+  .feature-card{background:var(--panel);border:1px solid var(--border);padding:24px;transition:border-color 0.2s;}
+  .feature-card:hover{border-color:var(--dim);}
+  .feature-icon{font-size:1.3rem;margin-bottom:10px;display:block;}
+  .feature-card h3{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:0.9rem;color:var(--bright);margin-bottom:6px;letter-spacing:0.06em;text-transform:uppercase;}
+  .feature-card p{font-size:0.84rem;color:var(--muted);margin:0;line-height:1.6;}
+
+  .faq-list{margin-top:36px;display:grid;gap:2px;}
+  .faq-item{background:var(--panel);border:1px solid var(--border);overflow:hidden;}
+  .faq-q{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:14px;color:var(--bright);font-family:'Rajdhani',sans-serif;font-weight:600;font-size:0.95rem;letter-spacing:0.04em;transition:background 0.2s;}
+  .faq-q:hover{background:rgba(200,145,42,0.05);}
+  .faq-icon{color:var(--teal);font-family:'Share Tech Mono',monospace;font-size:1rem;flex-shrink:0;transition:transform 0.3s;}
+  .faq-item.open .faq-icon{transform:rotate(45deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height 0.35s ease;}
+  .faq-item.open .faq-a{max-height:300px;}
+  .faq-a-inner{padding:16px 24px 20px;font-size:0.88rem;color:var(--text);font-weight:300;line-height:1.7;border-top:1px solid var(--border);}
+  .faq-a-inner a{color:var(--teal);}
+
+  .bottom-cta{text-align:center;padding:90px 24px;position:relative;overflow:hidden;background:linear-gradient(180deg,var(--dark) 0%,#1a1005 50%,var(--dark) 100%);}
+  .bottom-cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(0,201,167,0.06) 0%,transparent 70%);pointer-events:none;}
+  .bottom-cta h2{font-size:clamp(1.6rem,4vw,2.6rem);margin-bottom:14px;position:relative;}
+  .bottom-cta p{color:var(--text);max-width:480px;margin:0 auto 36px;font-weight:300;position:relative;}
+  .free-tag{display:inline-block;margin-top:18px;font-family:'Share Tech Mono',monospace;font-size:0.64rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;position:relative;}
+
+  footer{background:var(--panel);border-top:1px solid var(--border);text-align:center;padding:28px 24px;font-size:0.78rem;color:var(--muted);}
+  footer a{color:var(--teal);text-decoration:none;}
+  .footer-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;font-size:0.74rem;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Hearth <span>/ Icarus</span></a>
+  <a href="https://github.com/hearthforpc-oss/Hearth/releases" class="nav-cta">Download Free</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-label">Icarus — Co-op Save Sync</div>
+    <h1>Stop Waiting for the<br><em>Host to Come Online</em></h1>
+    <p class="hero-sub">Hearth automatically syncs your Icarus prospect and outpost saves between players through Google Drive. Anyone can host. Nobody gets locked out. No dedicated server needed.</p>
+    <div class="cta-group">
+      <a href="https://github.com/hearthforpc-oss/Hearth/releases" class="btn-primary">↓ Download Free</a>
+      <a href="https://github.com/hearthforpc-oss/Hearth" class="btn-ghost">View Source</a>
+    </div>
+    <div class="hero-stats">
+      <span class="hero-stat">Free Forever</span>
+      <span class="hero-stat">Open Source</span>
+      <span class="hero-stat">Your Google Drive</span>
+      <span class="hero-stat">No Server Required</span>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="stag">The Problem</div>
+  <h2>Icarus Ties Your World to One Machine</h2>
+  <p class="lead">By default, whoever created the prospect owns the save. When they go offline, the world goes with them. Your whole group is on standby until that one person is available.</p>
+  <div class="problem-block">
+    <h3>Host Goes Offline — Session Over</h3>
+    <p>Your crew wants to run a prospect but the person who owns the save is at work, asleep, or just not around. Without the host's machine, you can't play — even if everyone else is ready to go.</p>
+  </div>
+  <div class="problem-block">
+    <h3>Manual File Transfers Are a Mess</h3>
+    <p>Copying save files through Discord or USB drives works until it doesn't. One wrong transfer, one forgotten backup, and hours of progress disappear. No version control, no lock protection, no safety net.</p>
+  </div>
+  <div class="problem-block">
+    <h3>Dedicated Servers Cost Money and Time</h3>
+    <p>Running a dedicated Icarus server means leaving a PC on 24/7 or paying a monthly hosting fee — for a game you play a few nights a week. That's a bad trade.</p>
+  </div>
+</div>
+
+<div class="full-band">
+  <div class="fbi">
+    <div class="stag">How It Works</div>
+    <h2>Set It Up Once. Forget It Exists.</h2>
+    <p class="lead">Hearth runs quietly in the background. You play the game. It handles everything else automatically.</p>
+    <div class="terminal">
+      <div class="t-line"><span class="t-prompt">&gt;</span><span class="t-text">hearth.exe --status</span></div>
+      <div class="t-line"><span class="t-prompt"> </span><span class="t-success">✔ Icarus detected — prospects locked</span></div>
+      <div class="t-line"><span class="t-prompt"> </span><span class="t-text">Monitoring save folder...</span></div>
+      <div class="t-line"><span class="t-prompt"> </span><span class="t-comment">// Mid-session backup: 25 min interval</span></div>
+      <div class="t-line"><span class="t-prompt"> </span><span class="t-warn">⚑ player_one currently hosting — world locked</span></div>
+      <div class="t-line"><span class="t-prompt"> </span><span class="t-comment">// Session end detected — pushing to Drive...</span></div>
+      <div class="t-line"><span class="t-prompt"> </span><span class="t-success">✔ Sync complete. All players updated.</span></div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num-col"><div class="step-num">01</div></div>
+        <div class="step-body"><h3>Point Hearth at Your Google Drive</h3><p>One-time setup. Tell Hearth where your shared Google Drive folder lives. Your group shares that same folder — that's the only thing everyone needs in common.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num-col"><div class="step-num">02</div></div>
+        <div class="step-body"><h3>Share Your Icarus Prospects</h3><p>Check the box next to any world in Hearth. It pushes your save files to the shared folder immediately. Your crew can now see and sync that world on their end.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num-col"><div class="step-num">03</div></div>
+        <div class="step-body"><h3>Launch Icarus — Hearth Takes Over</h3><p>When Hearth detects Icarus launching, it automatically locks your shared worlds and pulls the latest version from Drive before you're in the menu. You're always on the most recent save.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num-col"><div class="step-num">04</div></div>
+        <div class="step-body"><h3>Close the Game — Sync Happens</h3><p>When you close Icarus, Hearth pushes your updated saves back to Drive automatically. No manual steps. The next person to open the game gets your progress.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="stag">What You Get</div>
+  <h2>Built for Groups Who Play on Their Own Schedule</h2>
+  <p class="lead">No subscriptions. No server bills. No technical knowledge required beyond setting up a Google Drive folder.</p>
+  <div class="feature-grid">
+    <div class="feature-card"><span class="feature-icon">🔒</span><h3>Lock Protection</h3><p>While anyone in your group is playing, Hearth marks the world as locked. No accidental overwrites. No lost sessions from two people writing at the same time.</p></div>
+    <div class="feature-card"><span class="feature-icon">📦</span><h3>Mid-Session Backups</h3><p>Hearth backs up your save locally every 25 minutes while you're playing. Never lose more than 25 minutes of progress from a crash.</p></div>
+    <div class="feature-card"><span class="feature-icon">☁️</span><h3>Your Drive, Your Data</h3><p>Save files go to a Google Drive folder you control. No third-party servers, no accounts with us, no subscriptions. You own it.</p></div>
+    <div class="feature-card"><span class="feature-icon">⚡</span><h3>Fully Automatic</h3><p>Once it's set up, Hearth runs in the background and handles everything. No manual syncing, no remembering to upload. Just play.</p></div>
+    <div class="feature-card"><span class="feature-icon">👁</span><h3>Open Source</h3><p>Every line of code is public on GitHub. Read exactly what Hearth does before you run it. No black boxes, no surprises.</p></div>
+    <div class="feature-card"><span class="feature-icon">🆓</span><h3>Free Forever</h3><p>No premium tier. No trial period. Hearth is free because the person who built it just wanted to play Icarus with his cousin.</p></div>
+  </div>
+</div>
+
+<div class="full-band">
+  <div class="fbi">
+    <div class="stag">FAQ</div>
+    <h2>Questions People Actually Search</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Can I play Icarus without the host being online?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Yes — that's exactly what Hearth is for. Hearth syncs your Icarus save files to a shared Google Drive folder so any player in your group can pull the latest save and host a session themselves. You're no longer tied to one person's machine or schedule.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How do I share Icarus save files with friends?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">With Hearth, you check a box next to your prospect in the app and it pushes the save to your shared Google Drive folder automatically. Your friends open Hearth on their end, pull the latest save, and they're ready to host. No manual file copying, no Discord file transfers.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Where does Icarus save files on PC?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Icarus stores saves in your Steam userdata folder, typically at <code style="color:var(--teal);font-family:'Share Tech Mono',monospace;">C:\Users\[YourName]\AppData\Local\Icarus\Saved\PlayerData</code>. Hearth finds this automatically — you don't need to touch the folder directly.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Do I need a dedicated server to play Icarus co-op?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">No. Icarus supports peer-to-peer co-op hosting natively — anyone can host a prospect as long as they have the save file. Hearth makes sure everyone in your group always has the latest save file, so any one of you can host any session.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What happens if two people launch Icarus at the same time?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Hearth uses a lock system. When one player launches Icarus, Hearth marks all shared worlds as locked and shows that status to everyone else. A second person can see the world is in use and who's playing — preventing two people from writing to the same save simultaneously.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is Hearth safe? Will it mess with my Icarus saves?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Hearth only reads and writes files to your Google Drive folder. It doesn't modify your local game files. It backs up your saves locally every 25 minutes as a safety net. Full source code is public at <a href="https://github.com/hearthforpc-oss/Hearth">github.com/hearthforpc-oss/Hearth</a>.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Does Hearth work with Icarus outposts or just prospects?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">Hearth syncs the entire Icarus save folder, which includes both prospects and outpost data. When Icarus launches, Hearth locks all shared saves automatically. All your shared content is protected during the session.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How many people can use Hearth for the same Icarus world?<span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-inner">As many as you want. Everyone installs Hearth, points it at the same shared Google Drive folder, and that's it. There's no player limit on the Hearth side — Icarus itself limits session sizes, not Hearth.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-cta">
+  <div class="stag" style="justify-content:center;margin-bottom:14px;">Ready to Play</div>
+  <h2>Your Crew Is Waiting.<br><em style="color:var(--teal);font-style:normal;">Stop Waiting on the Host.</em></h2>
+  <p>Free download. Open source. Takes about five minutes to set up. No account required on our end — just a Google Drive folder your group shares.</p>
+  <a href="https://github.com/hearthforpc-oss/Hearth/releases" class="btn-primary">↓ Download Hearth Free</a>
+  <br>
+  <span class="free-tag">// free forever &nbsp;·&nbsp; open source &nbsp;·&nbsp; no subscription</span>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="#">Home</a>
+    <a href="https://github.com/hearthforpc-oss/Hearth/releases">Download</a>
+    <a href="https://github.com/hearthforpc-oss/Hearth">GitHub</a>
+    <a href="mailto:hearthforpc@gmail.com">Contact</a>
+    <a href="https://buymeacoffee.com/hearthapp">Donate</a>
+  </div>
+  <p>Built by the Hearth team · MIT License</p>
+  <p style="margin-top:6px;font-size:0.7rem;opacity:0.5;">Hearth is not affiliated with Icarus, RocketWerkz, or any game listed on this site.</p>
+</footer>
+
+<script>
+function toggleFaq(btn){
+  const item=btn.closest('.faq-item');
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el=>el.classList.remove('open'));
+  if(!isOpen)item.classList.add('open');
+}
+</script>
+</body>
+</html>
