@@ -1,4 +1,4 @@
-# Hearth v1.6
+# Hearth v1.7
 **Play the same game world with your friends — even when you're on different schedules.**
 
 Hearth is a free app that automatically shares your game save files with your friends through Google Drive. When you stop playing, your friend can pick up right where you left off — no dedicated server needed.
@@ -149,6 +149,7 @@ Hearth keeps everyone in sync without any manual steps:
 - **When a game is detected launching** — Hearth locks all shared worlds and pulls the latest version before you reach the main menu
 - **While you're in game** — Hearth backs up your save locally every 25 minutes
 - **When you close a game** — Hearth waits for your save file to finish writing, then pushes it to Drive and clears the lock
+- **Co-op write-back** — if you were participating in someone else's world, Hearth automatically pushes your progress back to the world owner's Drive folder when you close the game
 - **Every 10 minutes** — Hearth checks for any stale locks on your own worlds and clears them if the game is no longer running
 - **Every 30 minutes** — Hearth checks that your Google Drive folder is still accessible and warns you if it isn't
 
@@ -166,7 +167,9 @@ You should never need to click Sync Now for normal play. It is there as a manual
 
 **When you play together at the same time:**
 - One person hosts the game, others join as normal
-- Hearth handles the save file when the host closes the game
+- When anyone closes the game, Hearth automatically pushes their progress to the world owner's Drive folder
+- The last person to close gets their save pushed as the final version
+- The world owner will have the latest session progress the next time they open Hearth
 
 ---
 
